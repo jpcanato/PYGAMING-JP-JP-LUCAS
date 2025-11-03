@@ -55,10 +55,11 @@ while rodando:
             elif estado_atual == TELA_MODO_JOGO:
                 if grama_rect.collidepoint(evento.pos):
                     print("Grama selecionada!")
-                elif rapida_rect.collidepoint(evento.pos):
-                    print("Rápida selecionada!")
                 elif saibro_rect.collidepoint(evento.pos):
                     print("Saibro selecionado!")
+                elif rapida_rect.collidepoint(evento.pos):
+                    print("Rápida selecionada!")
+                
     
     screen.fill((0, 0, 0))
     
@@ -69,8 +70,9 @@ while rodando:
         screen.blit(fundo_segunda_tela, (0, 0))
         screen.blit(modo_jogo_scaled, modo_jogo_rect)
         screen.blit(grama_scaled, grama_rect)
-        screen.blit(saibro_scaled, saibro_rect)
         screen.blit(rapida_scaled, rapida_rect)
+        screen.blit(saibro_scaled, saibro_rect)
+        
     
     pygame.display.flip()
     clock.tick(60)
