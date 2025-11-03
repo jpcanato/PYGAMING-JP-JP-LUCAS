@@ -4,8 +4,8 @@ import sys
 pygame.init()
 
 # Configurações
-SCREEN_WIDTH = 1700
-SCREEN_HEIGHT = 1000
+SCREEN_WIDTH = 850
+SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("DESOFT-ATP")
 clock = pygame.time.Clock()
@@ -14,9 +14,9 @@ clock = pygame.time.Clock()
 tela_inicio = pygame.image.load("imagens/Tela_inicio.png")
 tela_inicio = pygame.transform.scale(tela_inicio, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-botao_jogar = pygame.image.load("imagens/jogar.png")
-botao_tamanho = pygame.transform.scale(botao_jogar, (100, 140))
-botao_rect = botao_tamanho.get_rect(center=(850, 500))
+botao_jogar = pygame.image.load("imagens/jogar.bottão.png")
+botao_tamanho = pygame.transform.scale(botao_jogar, (300, 100))
+botao_rect = botao_tamanho.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-80))
 
 rodando = True
 while rodando:
