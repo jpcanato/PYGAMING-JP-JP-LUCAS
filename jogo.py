@@ -37,11 +37,11 @@ grama_rect = grama_scaled.get_rect(center=(SCREEN_WIDTH/2, 280))
 
 rapida_img = pygame.image.load("imagens/rápida.png")
 rapida_scaled = pygame.transform.scale(rapida_img, (200, 60))
-rapida_rect = rapida_scaled.get_rect(center=(SCREEN_WIDTH/2, 350))
+rapida_rect = rapida_scaled.get_rect(center=(SCREEN_WIDTH/2, 420))
 
 saibro_img = pygame.image.load("imagens/saibro.png")
 saibro_scaled = pygame.transform.scale(saibro_img, (200, 60))
-saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 420))
+saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 350))
 
 rodando = True
 while rodando:
