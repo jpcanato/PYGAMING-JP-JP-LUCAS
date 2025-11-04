@@ -19,6 +19,7 @@ estado_atual = TELA_INICIO
 # Variáveis dos jogadores
 personagem_player1 = None
 personagem_player2 = None
+tipo_quadra = None
 
 # Carregar imagens - Tela Início
 tela_inicio = pygame.image.load("imagens/Tela_inicio.png")
@@ -49,8 +50,12 @@ saibro_scaled = pygame.transform.scale(saibro_img, (200, 60))
 saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 350))
 
 # Carregar imagens - Tela Personagens
-fundo_personagens = pygame.image.load("imagens/Fundo_personagens.png")
-fundo_personagens = pygame.transform.scale(fundo_personagens, (SCREEN_WIDTH, SCREEN_HEIGHT))
+fundo_grama = pygame.image.load("imagens/fundograma.png")
+fundo_grama = pygame.transform.scale(fundo_grama, (SCREEN_WIDTH, SCREEN_HEIGHT))
+fundo_saibro = pygame.image.load("imagens/Fundo_personagens.png")
+fundo_saibro = pygame.transform.scale(fundo_saibro, (SCREEN_WIDTH, SCREEN_HEIGHT))
+fundo_rapida = pygame.image.load("imagens/fundorapida.png")
+fundo_rapida = pygame.transform.scale(fundo_rapida, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 djoko_img = pygame.image.load("imagens/djoko.png")
 federer_img = pygame.image.load("imagens/federer.png")
@@ -93,10 +98,13 @@ while rodando:
                     estado_atual = TELA_MODO_JOGO
             elif estado_atual == TELA_MODO_JOGO:
                 if grama_rect.collidepoint(evento.pos):
+                    tipo_quadra = "grama"
                     estado_atual = TELA_PERSONAGENS
                 elif saibro_rect.collidepoint(evento.pos):
+                    tipo_quadra = "saibro"
                     estado_atual = TELA_PERSONAGENS
                 elif rapida_rect.collidepoint(evento.pos):
+                    tipo_quadra = "rapida"
                     estado_atual = TELA_PERSONAGENS
             elif estado_atual == TELA_PERSONAGENS:
                 # Player 1 seleções
@@ -140,7 +148,12 @@ while rodando:
         screen.blit(rapida_scaled, rapida_rect)
         screen.blit(saibro_scaled, saibro_rect)
     elif estado_atual == TELA_PERSONAGENS:
-        screen.blit(fundo_personagens, (0, 0))
+        if tipo_quadra == "grama":
+            screen.blit(fundo_grama, (0, 0))
+        elif tipo_quadra == "saibro":
+            screen.blit(fundo_saibro, (0, 0))
+        elif tipo_quadra == "rapida":
+            screen.blit(fundo_rapida, (0, 0))
         # Player 1 personagens
         screen.blit(djoko_p1, djoko_p1_rect)
         screen.blit(federer_p1, federer_p1_rect)
