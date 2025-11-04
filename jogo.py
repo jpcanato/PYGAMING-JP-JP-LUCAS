@@ -63,6 +63,14 @@ fundo_saibro = pygame.transform.scale(fundo_saibro, (SCREEN_WIDTH, SCREEN_HEIGHT
 fundo_rapida = pygame.image.load("imagens/fundorapida.png")
 fundo_rapida = pygame.transform.scale(fundo_rapida, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
+# Carregar imagens - Fundos Countdown
+quadra_grama = pygame.image.load("imagens/quadra_1.png")
+quadra_grama = pygame.transform.scale(quadra_grama, (SCREEN_WIDTH, SCREEN_HEIGHT))
+quadra_saibro = pygame.image.load("imagens/quadra_2.png")
+quadra_saibro = pygame.transform.scale(quadra_saibro, (SCREEN_WIDTH, SCREEN_HEIGHT))
+quadra_rapida = pygame.image.load("imagens/quadra_3.png")
+quadra_rapida = pygame.transform.scale(quadra_rapida, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
 djoko_img = pygame.image.load("imagens/djoko.png")
 federer_img = pygame.image.load("imagens/federer.png")
 nadal_img = pygame.image.load("imagens/nadal.png")
@@ -77,9 +85,9 @@ federer_p1_rect = federer_p1.get_rect(center=(210, 240))
 nadal_p1 = pygame.transform.scale(nadal_img, (80, 80))
 nadal_p1_rect = nadal_p1.get_rect(center=(340, 240))
 joao_p1 = pygame.transform.scale(joao_img, (80, 80))
-joao_p1_rect = joao_p1.get_rect(center=(145, 360))
+joao_p1_rect = joao_p1.get_rect(center=(135, 360))
 resina_p1 = pygame.transform.scale(resina_img, (80, 80))
-resina_p1_rect = resina_p1.get_rect(center=(255, 360))
+resina_p1_rect = resina_p1.get_rect(center=(265, 360))
 
 # Player 2 (lado direito) - 3 na primeira linha, 2 na segunda
 djoko_p2 = pygame.transform.scale(djoko_img, (80, 80))
@@ -89,7 +97,7 @@ federer_p2_rect = federer_p2.get_rect(center=(640, 240))
 nadal_p2 = pygame.transform.scale(nadal_img, (80, 80))
 nadal_p2_rect = nadal_p2.get_rect(center=(770, 240))
 joao_p2 = pygame.transform.scale(joao_img, (80, 80))
-joao_p2_rect = joao_p2.get_rect(center=(595, 360))
+joao_p2_rect = joao_p2.get_rect(center=(575, 360))
 resina_p2 = pygame.transform.scale(resina_img, (80, 80))
 resina_p2_rect = resina_p2.get_rect(center=(705, 360))
 
@@ -222,9 +230,9 @@ while rodando:
         nome_nadal_p1 = fonte.render("Rafael Nadal", True, (255, 255, 255))
         screen.blit(nome_nadal_p1, (285, 285))
         nome_joao_p1 = fonte.render("João Fonseca", True, (255, 255, 255))
-        screen.blit(nome_joao_p1, (85, 405))
+        screen.blit(nome_joao_p1, (75, 405))
         nome_resina_p1 = fonte.render("Resina", True, (255, 255, 255))
-        screen.blit(nome_resina_p1, (230, 405))
+        screen.blit(nome_resina_p1, (240, 405))
         
         # Nomes Player 2
         nome_djoko_p2 = fonte.render("Novak Djokovic", True, (255, 255, 255))
@@ -234,7 +242,7 @@ while rodando:
         nome_nadal_p2 = fonte.render("Rafael Nadal", True, (255, 255, 255))
         screen.blit(nome_nadal_p2, (715, 285))
         nome_joao_p2 = fonte.render("João Fonseca", True, (255, 255, 255))
-        screen.blit(nome_joao_p2, (540, 405))
+        screen.blit(nome_joao_p2, (515, 405))
         nome_resina_p2 = fonte.render("Resina", True, (255, 255, 255))
         screen.blit(nome_resina_p2, (680, 405))
         
@@ -242,7 +250,13 @@ while rodando:
         if personagem_player1 and personagem_player2:
             screen.blit(iniciar_jogo_scaled, iniciar_jogo_rect)
     elif estado_atual == TELA_COUNTDOWN:
-        screen.fill((0, 0, 0))
+        if tipo_quadra == "grama":
+            screen.blit(quadra_grama, (0, 0))
+        elif tipo_quadra == "saibro":
+            screen.blit(quadra_saibro, (0, 0))
+        elif tipo_quadra == "rapida":
+            screen.blit(quadra_rapida, (0, 0))
+        
         if pygame.time.get_ticks() - tempo_countdown >= 1000:
             contador -= 1
             tempo_countdown = pygame.time.get_ticks()
