@@ -13,7 +13,12 @@ clock = pygame.time.Clock()
 # Estados do jogo
 TELA_INICIO = 0
 TELA_MODO_JOGO = 1
+TELA_PERSONAGENS = 2
 estado_atual = TELA_INICIO
+
+# Variáveis dos jogadores
+personagem_player1 = None
+personagem_player2 = None
 
 # Carregar imagens - Tela Início
 tela_inicio = pygame.image.load("imagens/Tela_inicio.png")
@@ -43,6 +48,35 @@ saibro_img = pygame.image.load("imagens/saibro.png")
 saibro_scaled = pygame.transform.scale(saibro_img, (200, 60))
 saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 350))
 
+# Carregar imagens - Tela Personagens
+fundo_personagens = pygame.image.load("imagens/Fundo_personagens.png")
+fundo_personagens = pygame.transform.scale(fundo_personagens, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+djoko_img = pygame.image.load("imagens/djoko.png")
+federer_img = pygame.image.load("imagens/federer.png")
+nadal_img = pygame.image.load("imagens/nadal.png")
+joao_img = pygame.image.load("imagens/jfonseca.png")
+
+# Player 1 (lado esquerdo)
+djoko_p1 = pygame.transform.scale(djoko_img, (100, 100))
+djoko_p1_rect = djoko_p1.get_rect(center=(150, 200))
+federer_p1 = pygame.transform.scale(federer_img, (100, 100))
+federer_p1_rect = federer_p1.get_rect(center=(150, 320))
+nadal_p1 = pygame.transform.scale(nadal_img, (100, 100))
+nadal_p1_rect = nadal_p1.get_rect(center=(280, 200))
+joao_p1 = pygame.transform.scale(joao_img, (100, 100))
+joao_p1_rect = joao_p1.get_rect(center=(280, 320))
+
+# Player 2 (lado direito)
+djoko_p2 = pygame.transform.scale(djoko_img, (100, 100))
+djoko_p2_rect = djoko_p2.get_rect(center=(570, 200))
+federer_p2 = pygame.transform.scale(federer_img, (100, 100))
+federer_p2_rect = federer_p2.get_rect(center=(570, 320))
+nadal_p2 = pygame.transform.scale(nadal_img, (100, 100))
+nadal_p2_rect = nadal_p2.get_rect(center=(700, 200))
+joao_p2 = pygame.transform.scale(joao_img, (100, 100))
+joao_p2_rect = joao_p2.get_rect(center=(700, 320))
+
 rodando = True
 while rodando:
     for evento in pygame.event.get():
@@ -54,24 +88,35 @@ while rodando:
                     estado_atual = TELA_MODO_JOGO
             elif estado_atual == TELA_MODO_JOGO:
                 if grama_rect.collidepoint(evento.pos):
-                    print("Grama selecionada!")
+                    estado_atual = TELA_PERSONAGENS
                 elif saibro_rect.collidepoint(evento.pos):
-                    print("Saibro selecionado!")
+                    estado_atual = TELA_PERSONAGENS
                 elif rapida_rect.collidepoint(evento.pos):
-                    print("Rápida selecionada!")
+                    estado_atual = TELA_PERSONAGENS
+            elif estado_atual == TELA_PERSONAGENS:
+                # Player 1 seleções
+                if djoko_p1_rect.collidepoint(evento.pos):
+                    personagem_player1 = "Djokovic"
+                elif federer_p1_rect.collidepoint(evento.pos):
+                    personagem_player1 = "Federer"
+                elif nadal_p1_rect.collidepoint(evento.pos):
+                    personagem_player1 = "Nadal"
+                elif joao_p1_rect.collidepoint(evento.pos):
+                    personagem_player1 = "João Fonseca"
+                # Player 2 seleções
+                elif djoko_p2_rect.collidepoint(evento.pos):
+                    personagem_player2 = "Djokovic"
+                elif federer_p2_rect.collidepoint(evento.pos):
+                    personagem_player2 = "Federer"
+                elif nadal_p2_rect.collidepoint(evento.pos):
+                    personagem_player2 = "Nadal"
+                elif joao_p2_rect.collidepoint(evento.pos):
+                    personagem_player2 = "João Fonseca"
                 
-    
-    screen.fill((0, 0, 0))
-    
-    if estado_atual == TELA_INICIO:
-        screen.blit(tela_inicio, (0, 0))
-        screen.blit(botao_jogar_scaled, botao_jogar_rect)
-    elif estado_atual == TELA_MODO_JOGO:
-        screen.blit(fundo_segunda_tela, (0, 0))
-        screen.blit(modo_jogo_scaled, modo_jogo_rect)
-        screen.blit(grama_scaled, grama_rect)
-        screen.blit(rapida_scaled, rapida_rect)
-        screen.blit(saibro_scaled, saibro_rect)
+                # Verificar se ambos escolheram
+                if personagem_player1 and personagem_player2:
+                    print(f"Player 1: {personagem_player1}, Player 2: {personagem_player2}")
+                    print("Jogo pode começar!")
         
     
     pygame.display.flip()
