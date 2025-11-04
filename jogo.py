@@ -181,6 +181,30 @@ while rodando:
         screen.blit(joao_p2, joao_p2_rect)
         screen.blit(resina_p2, resina_p2_rect)
         
+        # Sinalização Player 1 quando ele for selecionado
+        if personagem_player1 == "Djokovic":
+            pygame.draw.rect(screen, (0, 255, 0), djoko_p1_rect, 3) #um tamanho bom para sinalizar bem
+        elif personagem_player1 == "Federer":
+            pygame.draw.rect(screen, (0, 255, 0), federer_p1_rect, 3)
+        elif personagem_player1 == "Nadal":
+            pygame.draw.rect(screen, (0, 255, 0), nadal_p1_rect, 3)
+        elif personagem_player1 == "João Fonseca":
+            pygame.draw.rect(screen, (0, 255, 0), joao_p1_rect, 3)
+        elif personagem_player1 == "Resina":
+            pygame.draw.rect(screen, (0, 255, 0), resina_p1_rect, 3)
+            
+        # Sinalização Player 2 quando for selecionado
+        if personagem_player2 == "Djokovic":
+            pygame.draw.rect(screen, (255, 0, 0), djoko_p2_rect, 3)
+        elif personagem_player2 == "Federer":
+            pygame.draw.rect(screen, (255, 0, 0), federer_p2_rect, 3)
+        elif personagem_player2 == "Nadal":
+            pygame.draw.rect(screen, (255, 0, 0), nadal_p2_rect, 3)
+        elif personagem_player2 == "João Fonseca":
+            pygame.draw.rect(screen, (255, 0, 0), joao_p2_rect, 3)
+        elif personagem_player2 == "Resina":
+            pygame.draw.rect(screen, (255, 0, 0), resina_p2_rect, 3)
+        
         # Nomes Player 1
         nome_djoko_p1 = fonte.render("Novak Djokovic", True, (255, 255, 255))
         screen.blit(nome_djoko_p1, (30, 265))
