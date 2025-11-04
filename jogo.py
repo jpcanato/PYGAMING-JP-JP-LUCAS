@@ -56,26 +56,31 @@ djoko_img = pygame.image.load("imagens/djoko.png")
 federer_img = pygame.image.load("imagens/federer.png")
 nadal_img = pygame.image.load("imagens/nadal.png")
 joao_img = pygame.image.load("imagens/jfonseca.png")
+resina_img = pygame.image.load("imagens/resina.png")
 
 # Player 1 (lado esquerdo)
 djoko_p1 = pygame.transform.scale(djoko_img, (100, 100))
-djoko_p1_rect = djoko_p1.get_rect(center=(150, 200))
+djoko_p1_rect = djoko_p1.get_rect(center=(150, 150))
 federer_p1 = pygame.transform.scale(federer_img, (100, 100))
-federer_p1_rect = federer_p1.get_rect(center=(150, 320))
+federer_p1_rect = federer_p1.get_rect(center=(150, 270))
 nadal_p1 = pygame.transform.scale(nadal_img, (100, 100))
-nadal_p1_rect = nadal_p1.get_rect(center=(280, 200))
+nadal_p1_rect = nadal_p1.get_rect(center=(280, 150))
 joao_p1 = pygame.transform.scale(joao_img, (100, 100))
-joao_p1_rect = joao_p1.get_rect(center=(280, 320))
+joao_p1_rect = joao_p1.get_rect(center=(280, 270))
+resina_p1 = pygame.transform.scale(resina_img, (100, 100))
+resina_p1_rect = resina_p1.get_rect(center=(215, 390))
 
 # Player 2 (lado direito)
 djoko_p2 = pygame.transform.scale(djoko_img, (100, 100))
-djoko_p2_rect = djoko_p2.get_rect(center=(570, 200))
+djoko_p2_rect = djoko_p2.get_rect(center=(570, 150))
 federer_p2 = pygame.transform.scale(federer_img, (100, 100))
-federer_p2_rect = federer_p2.get_rect(center=(570, 320))
+federer_p2_rect = federer_p2.get_rect(center=(570, 270))
 nadal_p2 = pygame.transform.scale(nadal_img, (100, 100))
-nadal_p2_rect = nadal_p2.get_rect(center=(700, 200))
+nadal_p2_rect = nadal_p2.get_rect(center=(700, 150))
 joao_p2 = pygame.transform.scale(joao_img, (100, 100))
-joao_p2_rect = joao_p2.get_rect(center=(700, 320))
+joao_p2_rect = joao_p2.get_rect(center=(700, 270))
+resina_p2 = pygame.transform.scale(resina_img, (100, 100))
+resina_p2_rect = resina_p2.get_rect(center=(635, 390))
 
 rodando = True
 while rodando:
@@ -103,6 +108,8 @@ while rodando:
                     personagem_player1 = "Nadal"
                 elif joao_p1_rect.collidepoint(evento.pos):
                     personagem_player1 = "João Fonseca"
+                elif resina_p1_rect.collidepoint(evento.pos):
+                    personagem_player1 = "Resina"
                 # Player 2 seleções
                 elif djoko_p2_rect.collidepoint(evento.pos):
                     personagem_player2 = "Djokovic"
@@ -112,6 +119,8 @@ while rodando:
                     personagem_player2 = "Nadal"
                 elif joao_p2_rect.collidepoint(evento.pos):
                     personagem_player2 = "João Fonseca"
+                elif resina_p2_rect.collidepoint(evento.pos):
+                    personagem_player2 = "Resina"
                 
                 # Verificar se ambos escolheram
                 if personagem_player1 and personagem_player2:
@@ -137,11 +146,13 @@ while rodando:
         screen.blit(federer_p1, federer_p1_rect)
         screen.blit(nadal_p1, nadal_p1_rect)
         screen.blit(joao_p1, joao_p1_rect)
+        screen.blit(resina_p1, resina_p1_rect)
         # Player 2 personagens
         screen.blit(djoko_p2, djoko_p2_rect)
         screen.blit(federer_p2, federer_p2_rect)
         screen.blit(nadal_p2, nadal_p2_rect)
         screen.blit(joao_p2, joao_p2_rect)
+        screen.blit(resina_p2, resina_p2_rect)
     
     pygame.display.flip()
     clock.tick(60)
