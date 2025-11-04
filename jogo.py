@@ -236,9 +236,9 @@ while rodando:
         nome_nadal_p1 = fonte.render("Rafael Nadal", True, (255, 255, 255))
         screen.blit(nome_nadal_p1, (295, 285))
         nome_joao_p1 = fonte.render("João Fonseca", True, (255, 255, 255))
-        screen.blit(nome_joao_p1, (86, 405))
-        nome_resina_p1 = fonte.render("Resina", True, (255, 255, 255))
-        screen.blit(nome_resina_p1, (240, 405))
+        screen.blit(nome_joao_p1, (84, 405))
+        nome_resina_p1 = fonte.render("Mr. Resina", True, (255, 255, 255))
+        screen.blit(nome_resina_p1, (225, 405))
         
         # Nomes Player 2
         nome_djoko_p2 = fonte.render("Novak Djokovic", True, (255, 255, 255))
@@ -249,8 +249,8 @@ while rodando:
         screen.blit(nome_nadal_p2, (728, 285))
         nome_joao_p2 = fonte.render("João Fonseca", True, (255, 255, 255))
         screen.blit(nome_joao_p2, (527, 405))
-        nome_resina_p2 = fonte.render("Resina", True, (255, 255, 255))
-        screen.blit(nome_resina_p2, (680, 405))
+        nome_resina_p2 = fonte.render("Mr. Resina", True, (255, 255, 255))
+        screen.blit(nome_resina_p2, (665, 405))
         
         # Botão iniciar jogo (só aparece se ambos escolheram)
         if personagem_player1 and personagem_player2:
