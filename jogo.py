@@ -87,6 +87,11 @@ joao_p2_rect = joao_p2.get_rect(center=(730, 350))
 resina_p2 = pygame.transform.scale(resina_img, (100, 100))
 resina_p2_rect = resina_p2.get_rect(center=(680, 450))
 
+# Botão iniciar jogo
+iniciar_jogo_img = pygame.image.load("imagens/iniciarjogo.png")
+iniciar_jogo_scaled = pygame.transform.scale(iniciar_jogo_img, (120, 40))
+iniciar_jogo_rect = iniciar_jogo_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+
 rodando = True
 while rodando:
     for evento in pygame.event.get():
@@ -137,11 +142,9 @@ while rodando:
                     personagem_player2 = "João Fonseca"
                 elif resina_p2_rect.collidepoint(evento.pos):
                     personagem_player2 = "Resina"
-                
-                # Verificar se ambos escolheram
-                if personagem_player1 and personagem_player2:
-                    print(f"Player 1: {personagem_player1}, Player 2: {personagem_player2}")
-                    print("Jogo pode começar!")
+                elif iniciar_jogo_rect.collidepoint(evento.pos):
+                    if personagem_player1 and personagem_player2:
+                        print(f"Iniciando jogo: {personagem_player1} vs {personagem_player2} em {tipo_quadra}")
         
 
     screen.fill((0, 0, 0))
@@ -174,6 +177,9 @@ while rodando:
         screen.blit(nadal_p2, nadal_p2_rect)
         screen.blit(joao_p2, joao_p2_rect)
         screen.blit(resina_p2, resina_p2_rect)
+        # Botão iniciar jogo (só aparece se ambos escolheram)
+        if personagem_player1 and personagem_player2:
+            screen.blit(iniciar_jogo_scaled, iniciar_jogo_rect)
     
     pygame.display.flip()
     clock.tick(60)
