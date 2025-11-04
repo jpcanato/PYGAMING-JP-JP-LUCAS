@@ -14,6 +14,7 @@ clock = pygame.time.Clock()
 TELA_INICIO = 0
 TELA_MODO_JOGO = 1
 TELA_PERSONAGENS = 2
+TELA_COUNTDOWN = 3
 estado_atual = TELA_INICIO
 
 # Variáveis dos jogadores
@@ -95,6 +96,11 @@ iniciar_jogo_rect = iniciar_jogo_scaled.get_rect(center=(SCREEN_WIDTH/2, 470))
 # Fonte para nomes
 fonte = pygame.font.Font(None, 24)
 
+# Variáveis do countdown
+contador = 3
+tempo_countdown = 0
+font_countdown = pygame.font.Font(None, 200)
+
 rodando = True
 while rodando:
     for evento in pygame.event.get():
@@ -147,7 +153,9 @@ while rodando:
                     personagem_player2 = "Resina"
                 elif iniciar_jogo_rect.collidepoint(evento.pos):
                     if personagem_player1 and personagem_player2:
-                        print(f"Iniciando jogo: {personagem_player1} vs {personagem_player2} em {tipo_quadra}")
+                        estado_atual = TELA_COUNTDOWN
+                        contador = 3
+                        tempo_countdown = pygame.time.get_ticks()
         
 
     screen.fill((0, 0, 0))
@@ -231,6 +239,18 @@ while rodando:
         # Botão iniciar jogo (só aparece se ambos escolheram)
         if personagem_player1 and personagem_player2:
             screen.blit(iniciar_jogo_scaled, iniciar_jogo_rect)
+    elif estado_atual == TELA_COUNTDOWN:
+        screen.fill((0, 0, 0))
+        if pygame.time.get_ticks() - tempo_countdown >= 1000:
+            contador -= 1
+            tempo_countdown = pygame.time.get_ticks()
+            if contador < 1:
+                print("Jogo iniciado!")
+        
+        if contador > 0:
+            texto = font_countdown.render(str(contador), True, (255, 255, 255))
+            texto_rect = texto.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+            screen.blit(texto, texto_rect)
     
     pygame.display.flip()
     clock.tick(60)
