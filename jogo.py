@@ -92,6 +92,14 @@ while rodando:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             rodando = False
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_ESCAPE:
+                if estado_atual == TELA_MODO_JOGO:
+                    estado_atual = TELA_INICIO
+                elif estado_atual == TELA_PERSONAGENS:
+                    estado_atual = TELA_MODO_JOGO
+                    personagem_player1 = None
+                    personagem_player2 = None
         if evento.type == pygame.MOUSEBUTTONDOWN:
             if estado_atual == TELA_INICIO:
                 if botao_jogar_rect.collidepoint(evento.pos):
