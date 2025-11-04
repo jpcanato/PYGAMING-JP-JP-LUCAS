@@ -7,7 +7,7 @@ pygame.mixer.init()
 # Carregar e tocar música de fundo
 pygame.mixer.music.load("The Watcher (Instrumental) - Dr. Dre (youtube).mp3")
 pygame.mixer.music.play(-1)  # -1 para tocar em loop infinito
-pygame.mixer.music.set_volume(0.5)  # Volume a 50%
+pygame.mixer.music.set_volume(1)  # Volume a 50%
 
 # Configurações
 SCREEN_WIDTH = 850
