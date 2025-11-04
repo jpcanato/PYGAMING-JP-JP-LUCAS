@@ -14,13 +14,11 @@ clock = pygame.time.Clock()
 TELA_INICIO = 0
 TELA_MODO_JOGO = 1
 TELA_PERSONAGENS = 2
-TELA_COUNTDOWN = 3
 estado_atual = TELA_INICIO
 
 # Variáveis dos jogadores
 personagem_player1 = None
 personagem_player2 = None
-tipo_quadra = None
 
 # Carregar imagens - Tela Início
 tela_inicio = pygame.image.load("imagens/Tela_inicio.png")
@@ -51,82 +49,49 @@ saibro_scaled = pygame.transform.scale(saibro_img, (200, 60))
 saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 350))
 
 # Carregar imagens - Tela Personagens
-fundo_grama = pygame.image.load("imagens/fundograma.png")
-fundo_grama = pygame.transform.scale(fundo_grama, (SCREEN_WIDTH, SCREEN_HEIGHT))
-fundo_saibro = pygame.image.load("imagens/Fundo_personagens.png")
-fundo_saibro = pygame.transform.scale(fundo_saibro, (SCREEN_WIDTH, SCREEN_HEIGHT))
-fundo_rapida = pygame.image.load("imagens/fundorapida.png")
-fundo_rapida = pygame.transform.scale(fundo_rapida, (SCREEN_WIDTH, SCREEN_HEIGHT))
+fundo_personagens = pygame.image.load("imagens/Fundo_personagens.png")
+fundo_personagens = pygame.transform.scale(fundo_personagens, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 djoko_img = pygame.image.load("imagens/djoko.png")
 federer_img = pygame.image.load("imagens/federer.png")
 nadal_img = pygame.image.load("imagens/nadal.png")
 joao_img = pygame.image.load("imagens/jfonseca.png")
-resina_img = pygame.image.load("imagens/resina.png")
 
 # Player 1 (lado esquerdo)
-djoko_p1 = pygame.transform.scale(djoko_img, (80, 80))
-djoko_p1_rect = djoko_p1.get_rect(center=(100, 220))
-federer_p1 = pygame.transform.scale(federer_img, (80, 80))
-federer_p1_rect = federer_p1.get_rect(center=(220, 220))
-nadal_p1 = pygame.transform.scale(nadal_img, (80, 80))
-nadal_p1_rect = nadal_p1.get_rect(center=(340, 220))
-joao_p1 = pygame.transform.scale(joao_img, (80, 80))
-joao_p1_rect = joao_p1.get_rect(center=(160, 350))
-resina_p1 = pygame.transform.scale(resina_img, (80, 80))
-resina_p1_rect = resina_p1.get_rect(center=(280, 350))
+djoko_p1 = pygame.transform.scale(djoko_img, (100, 100))
+djoko_p1_rect = djoko_p1.get_rect(center=(150, 200))
+federer_p1 = pygame.transform.scale(federer_img, (100, 100))
+federer_p1_rect = federer_p1.get_rect(center=(150, 320))
+nadal_p1 = pygame.transform.scale(nadal_img, (100, 100))
+nadal_p1_rect = nadal_p1.get_rect(center=(280, 200))
+joao_p1 = pygame.transform.scale(joao_img, (100, 100))
+joao_p1_rect = joao_p1.get_rect(center=(280, 320))
 
 # Player 2 (lado direito)
-djoko_p2 = pygame.transform.scale(djoko_img, (80, 80))
-djoko_p2_rect = djoko_p2.get_rect(center=(510, 220))
-federer_p2 = pygame.transform.scale(federer_img, (80, 80))
-federer_p2_rect = federer_p2.get_rect(center=(630, 220))
-nadal_p2 = pygame.transform.scale(nadal_img, (80, 80))
-nadal_p2_rect = nadal_p2.get_rect(center=(750, 220))
-joao_p2 = pygame.transform.scale(joao_img, (80, 80))
-joao_p2_rect = joao_p2.get_rect(center=(570, 350))
-resina_p2 = pygame.transform.scale(resina_img, (80, 80))
-resina_p2_rect = resina_p2.get_rect(center=(690, 350))
-
-# Botão iniciar jogo
-iniciar_jogo_img = pygame.image.load("imagens/iniciarjogo.png")
-iniciar_jogo_scaled = pygame.transform.scale(iniciar_jogo_img, (120, 40))
-iniciar_jogo_rect = iniciar_jogo_scaled.get_rect(center=(SCREEN_WIDTH/2, 470))
-
-# Fonte para nomes
-fonte = pygame.font.Font(None, 24)
-
-# Variáveis do countdown
-contador = 3
-tempo_countdown = 0
-font_countdown = pygame.font.Font(None, 200)
+djoko_p2 = pygame.transform.scale(djoko_img, (100, 100))
+djoko_p2_rect = djoko_p2.get_rect(center=(570, 200))
+federer_p2 = pygame.transform.scale(federer_img, (100, 100))
+federer_p2_rect = federer_p2.get_rect(center=(570, 320))
+nadal_p2 = pygame.transform.scale(nadal_img, (100, 100))
+nadal_p2_rect = nadal_p2.get_rect(center=(700, 200))
+joao_p2 = pygame.transform.scale(joao_img, (100, 100))
+joao_p2_rect = joao_p2.get_rect(center=(700, 320))
 
 rodando = True
 while rodando:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             rodando = False
-        if evento.type == pygame.KEYDOWN:
-            if evento.key == pygame.K_ESCAPE:
-                if estado_atual == TELA_MODO_JOGO:
-                    estado_atual = TELA_INICIO
-                elif estado_atual == TELA_PERSONAGENS:
-                    estado_atual = TELA_MODO_JOGO
-                    personagem_player1 = None
-                    personagem_player2 = None
         if evento.type == pygame.MOUSEBUTTONDOWN:
             if estado_atual == TELA_INICIO:
                 if botao_jogar_rect.collidepoint(evento.pos):
                     estado_atual = TELA_MODO_JOGO
             elif estado_atual == TELA_MODO_JOGO:
                 if grama_rect.collidepoint(evento.pos):
-                    tipo_quadra = "grama"
                     estado_atual = TELA_PERSONAGENS
                 elif saibro_rect.collidepoint(evento.pos):
-                    tipo_quadra = "saibro"
                     estado_atual = TELA_PERSONAGENS
                 elif rapida_rect.collidepoint(evento.pos):
-                    tipo_quadra = "rapida"
                     estado_atual = TELA_PERSONAGENS
             elif estado_atual == TELA_PERSONAGENS:
                 # Player 1 seleções
@@ -138,8 +103,6 @@ while rodando:
                     personagem_player1 = "Nadal"
                 elif joao_p1_rect.collidepoint(evento.pos):
                     personagem_player1 = "João Fonseca"
-                elif resina_p1_rect.collidepoint(evento.pos):
-                    personagem_player1 = "Resina"
                 # Player 2 seleções
                 elif djoko_p2_rect.collidepoint(evento.pos):
                     personagem_player2 = "Djokovic"
@@ -149,13 +112,11 @@ while rodando:
                     personagem_player2 = "Nadal"
                 elif joao_p2_rect.collidepoint(evento.pos):
                     personagem_player2 = "João Fonseca"
-                elif resina_p2_rect.collidepoint(evento.pos):
-                    personagem_player2 = "Resina"
-                elif iniciar_jogo_rect.collidepoint(evento.pos):
-                    if personagem_player1 and personagem_player2:
-                        estado_atual = TELA_COUNTDOWN
-                        contador = 3
-                        tempo_countdown = pygame.time.get_ticks()
+                
+                # Verificar se ambos escolheram
+                if personagem_player1 and personagem_player2:
+                    print(f"Player 1: {personagem_player1}, Player 2: {personagem_player2}")
+                    print("Jogo pode começar!")
         
 
     screen.fill((0, 0, 0))
@@ -170,88 +131,18 @@ while rodando:
         screen.blit(rapida_scaled, rapida_rect)
         screen.blit(saibro_scaled, saibro_rect)
     elif estado_atual == TELA_PERSONAGENS:
-        if tipo_quadra == "grama":
-            screen.blit(fundo_grama, (0, 0))
-        elif tipo_quadra == "saibro":
-            screen.blit(fundo_saibro, (0, 0))
-        elif tipo_quadra == "rapida":
-            screen.blit(fundo_rapida, (0, 0))
+        screen.blit(fundo_personagens, (0, 0))
         # Player 1 personagens
         screen.blit(djoko_p1, djoko_p1_rect)
         screen.blit(federer_p1, federer_p1_rect)
         screen.blit(nadal_p1, nadal_p1_rect)
         screen.blit(joao_p1, joao_p1_rect)
-        screen.blit(resina_p1, resina_p1_rect)
         # Player 2 personagens
         screen.blit(djoko_p2, djoko_p2_rect)
         screen.blit(federer_p2, federer_p2_rect)
         screen.blit(nadal_p2, nadal_p2_rect)
-        screen.blit(joao_p2, joao_p2_rect)
-        screen.blit(resina_p2, resina_p2_rect)
-        
-        # Sinalização Player 1 quando ele for selecionado
-        if personagem_player1 == "Djokovic":
-            pygame.draw.rect(screen, (0, 255, 0), djoko_p1_rect, 3) #um tamanho bom para sinalizar bem
-        elif personagem_player1 == "Federer":
-            pygame.draw.rect(screen, (0, 255, 0), federer_p1_rect, 3)
-        elif personagem_player1 == "Nadal":
-            pygame.draw.rect(screen, (0, 255, 0), nadal_p1_rect, 3)
-        elif personagem_player1 == "João Fonseca":
-            pygame.draw.rect(screen, (0, 255, 0), joao_p1_rect, 3)
-        elif personagem_player1 == "Resina":
-            pygame.draw.rect(screen, (0, 255, 0), resina_p1_rect, 3)
-            
-        # Sinalização Player 2 quando for selecionado
-        if personagem_player2 == "Djokovic":
-            pygame.draw.rect(screen, (255, 0, 0), djoko_p2_rect, 3)
-        elif personagem_player2 == "Federer":
-            pygame.draw.rect(screen, (255, 0, 0), federer_p2_rect, 3)
-        elif personagem_player2 == "Nadal":
-            pygame.draw.rect(screen, (255, 0, 0), nadal_p2_rect, 3)
-        elif personagem_player2 == "João Fonseca":
-            pygame.draw.rect(screen, (255, 0, 0), joao_p2_rect, 3)
-        elif personagem_player2 == "Resina":
-            pygame.draw.rect(screen, (255, 0, 0), resina_p2_rect, 3)
-        
-        # Nomes Player 1
-        nome_djoko_p1 = fonte.render("Novak Djokovic", True, (255, 255, 255))
-        screen.blit(nome_djoko_p1, (30, 265))
-        nome_federer_p1 = fonte.render("Roger Federer", True, (255, 255, 255))
-        screen.blit(nome_federer_p1, (160, 265))
-        nome_nadal_p1 = fonte.render("Rafael Nadal", True, (255, 255, 255))
-        screen.blit(nome_nadal_p1, (295, 265))
-        nome_joao_p1 = fonte.render("João Fonseca", True, (255, 255, 255))
-        screen.blit(nome_joao_p1, (105, 395))
-        nome_resina_p1 = fonte.render("Resina", True, (255, 255, 255))
-        screen.blit(nome_resina_p1, (255, 395))
-        
-        # Nomes Player 2
-        nome_djoko_p2 = fonte.render("Novak Djokovic", True, (255, 255, 255))
-        screen.blit(nome_djoko_p2, (440, 265))
-        nome_federer_p2 = fonte.render("Roger Federer", True, (255, 255, 255))
-        screen.blit(nome_federer_p2, (570, 265))
-        nome_nadal_p2 = fonte.render("Rafael Nadal", True, (255, 255, 255))
-        screen.blit(nome_nadal_p2, (705, 265))
-        nome_joao_p2 = fonte.render("João Fonseca", True, (255, 255, 255))
-        screen.blit(nome_joao_p2, (515, 395))
-        nome_resina_p2 = fonte.render("Resina", True, (255, 255, 255))
-        screen.blit(nome_resina_p2, (665, 395))
-        # Botão iniciar jogo (só aparece se ambos escolheram)
-        if personagem_player1 and personagem_player2:
-            screen.blit(iniciar_jogo_scaled, iniciar_jogo_rect)
-    elif estado_atual == TELA_COUNTDOWN:
-        screen.fill((0, 0, 0))
-        if pygame.time.get_ticks() - tempo_countdown >= 1000:
-            contador -= 1
-            tempo_countdown = pygame.time.get_ticks()
-            if contador < 1:
-                print("Jogo iniciado!")
-        
-        if contador > 0:
-            texto = font_countdown.render(str(contador), True, (255, 255, 255))
-            texto_rect = texto.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
-            screen.blit(texto, texto_rect)
-    
+        screen.blit(joao_p2, joao_p2_rect) 
+
     pygame.display.flip()
     clock.tick(60)
 
