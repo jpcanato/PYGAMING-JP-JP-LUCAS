@@ -45,13 +45,11 @@ botao_jogar_rect = botao_jogar_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HE
 fundo_segunda_tela = pygame.image.load("imagens/fundosegundatela.png")
 fundo_segunda_tela = pygame.transform.scale(fundo_segunda_tela, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-modo_jogo_img = pygame.image.load("imagens/mododejogo.png")
-modo_jogo_scaled = pygame.transform.scale(modo_jogo_img, (300, 80))
-modo_jogo_rect = modo_jogo_scaled.get_rect(center=(SCREEN_WIDTH/2, 150))
+
 
 grama_img = pygame.image.load("imagens/grama.png")
 grama_scaled = pygame.transform.scale(grama_img, (200, 60))
-grama_rect = grama_scaled.get_rect(center=(SCREEN_WIDTH/2, 280))
+grama_rect = grama_scaled.get_rect(center=(SCREEN_WIDTH/2, 80))
 
 rapida_img = pygame.image.load("imagens/rápida.png")
 rapida_scaled = pygame.transform.scale(rapida_img, (200, 60))
@@ -59,7 +57,7 @@ rapida_rect = rapida_scaled.get_rect(center=(SCREEN_WIDTH/2, 420))
 
 saibro_img = pygame.image.load("imagens/saibro.png")
 saibro_scaled = pygame.transform.scale(saibro_img, (200, 60))
-saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 350))
+saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 250))
 
 # Carregar imagens - Tela Personagens
 fundo_grama = pygame.image.load("imagens/fundograma.png")
@@ -180,7 +178,6 @@ while rodando:
         screen.blit(botao_jogar_scaled, botao_jogar_rect)
     elif estado_atual == TELA_MODO_JOGO:
         screen.blit(fundo_segunda_tela, (0, 0))
-        screen.blit(modo_jogo_scaled, modo_jogo_rect)
         screen.blit(grama_scaled, grama_rect)
         screen.blit(rapida_scaled, rapida_rect)
         screen.blit(saibro_scaled, saibro_rect)
