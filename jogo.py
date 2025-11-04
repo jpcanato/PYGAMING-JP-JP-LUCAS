@@ -118,6 +118,30 @@ while rodando:
                     print(f"Player 1: {personagem_player1}, Player 2: {personagem_player2}")
                     print("Jogo pode começar!")
         
+
+    screen.fill((0, 0, 0))
+    
+    if estado_atual == TELA_INICIO:
+        screen.blit(tela_inicio, (0, 0))
+        screen.blit(botao_jogar_scaled, botao_jogar_rect)
+    elif estado_atual == TELA_MODO_JOGO:
+        screen.blit(fundo_segunda_tela, (0, 0))
+        screen.blit(modo_jogo_scaled, modo_jogo_rect)
+        screen.blit(grama_scaled, grama_rect)
+        screen.blit(rapida_scaled, rapida_rect)
+        screen.blit(saibro_scaled, saibro_rect)
+    elif estado_atual == TELA_PERSONAGENS:
+        screen.blit(fundo_personagens, (0, 0))
+        # Player 1 personagens
+        screen.blit(djoko_p1, djoko_p1_rect)
+        screen.blit(federer_p1, federer_p1_rect)
+        screen.blit(nadal_p1, nadal_p1_rect)
+        screen.blit(joao_p1, joao_p1_rect)
+        # Player 2 personagens
+        screen.blit(djoko_p2, djoko_p2_rect)
+        screen.blit(federer_p2, federer_p2_rect)
+        screen.blit(nadal_p2, nadal_p2_rect)
+        screen.blit(joao_p2, joao_p2_rect)
     
     pygame.display.flip()
     clock.tick(60)
