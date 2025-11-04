@@ -2,6 +2,12 @@ import pygame
 import sys
 
 pygame.init()
+pygame.mixer.init()
+
+# Carregar e tocar música de fundo
+pygame.mixer.music.load("The Watcher (Instrumental) - Dr. Dre (youtube).mp3")
+pygame.mixer.music.play(-1)  # -1 para tocar em loop infinito
+pygame.mixer.music.set_volume(0.5)  # Volume a 50%
 
 # Configurações
 SCREEN_WIDTH = 850
@@ -226,11 +232,11 @@ while rodando:
         nome_djoko_p1 = fonte.render("Novak Djokovic", True, (255, 255, 255))
         screen.blit(nome_djoko_p1, (15, 285))
         nome_federer_p1 = fonte.render("Roger Federer", True, (255, 255, 255))
-        screen.blit(nome_federer_p1, (155, 285))
+        screen.blit(nome_federer_p1, (158, 285))
         nome_nadal_p1 = fonte.render("Rafael Nadal", True, (255, 255, 255))
-        screen.blit(nome_nadal_p1, (285, 285))
+        screen.blit(nome_nadal_p1, (295, 285))
         nome_joao_p1 = fonte.render("João Fonseca", True, (255, 255, 255))
-        screen.blit(nome_joao_p1, (75, 405))
+        screen.blit(nome_joao_p1, (86, 405))
         nome_resina_p1 = fonte.render("Resina", True, (255, 255, 255))
         screen.blit(nome_resina_p1, (240, 405))
         
@@ -238,11 +244,11 @@ while rodando:
         nome_djoko_p2 = fonte.render("Novak Djokovic", True, (255, 255, 255))
         screen.blit(nome_djoko_p2, (445, 285))
         nome_federer_p2 = fonte.render("Roger Federer", True, (255, 255, 255))
-        screen.blit(nome_federer_p2, (585, 285))
+        screen.blit(nome_federer_p2, (588, 285))
         nome_nadal_p2 = fonte.render("Rafael Nadal", True, (255, 255, 255))
-        screen.blit(nome_nadal_p2, (715, 285))
+        screen.blit(nome_nadal_p2, (728, 285))
         nome_joao_p2 = fonte.render("João Fonseca", True, (255, 255, 255))
-        screen.blit(nome_joao_p2, (515, 405))
+        screen.blit(nome_joao_p2, (527, 405))
         nome_resina_p2 = fonte.render("Resina", True, (255, 255, 255))
         screen.blit(nome_resina_p2, (680, 405))
         
