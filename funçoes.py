@@ -9,27 +9,27 @@ class Jogador:
         self.y = y
         self.personagem = personagem
         self.lado = lado
-        self.velocidade = 5
-        self.rect = pygame.Rect(x-40, y-40, 80, 80)
+        self.velocidade = 7
+        self.rect = pygame.Rect(x-60, y-60, 120, 120)
         
     def mover(self, keys):
         if self.lado == "esquerda":
-            if keys[pygame.K_w] and self.y > 158:
+            if keys[pygame.K_w] and self.y > 237:
                 self.y -= self.velocidade
-            if keys[pygame.K_s] and self.y < SCREEN_HEIGHT - 110:
+            if keys[pygame.K_s] and self.y < SCREEN_HEIGHT - 165:
                 self.y += self.velocidade
-            if keys[pygame.K_a] and self.x > 80:
+            if keys[pygame.K_a] and self.x > 120:
                 self.x -= self.velocidade
-            if keys[pygame.K_d] and self.x < SCREEN_WIDTH//2 - 80:
+            if keys[pygame.K_d] and self.x < SCREEN_WIDTH//2 - 120:
                 self.x += self.velocidade
         else:
-            if keys[pygame.K_UP] and self.y > 158:
+            if keys[pygame.K_UP] and self.y > 237:
                 self.y -= self.velocidade
-            if keys[pygame.K_DOWN] and self.y < SCREEN_HEIGHT - 110:
+            if keys[pygame.K_DOWN] and self.y < SCREEN_HEIGHT - 165:
                 self.y += self.velocidade
-            if keys[pygame.K_LEFT] and self.x > SCREEN_WIDTH//2 + 80:
+            if keys[pygame.K_LEFT] and self.x > SCREEN_WIDTH//2 + 120:
                 self.x -= self.velocidade
-            if keys[pygame.K_RIGHT] and self.x < SCREEN_WIDTH - 80:
+            if keys[pygame.K_RIGHT] and self.x < SCREEN_WIDTH - 120:
                 self.x += self.velocidade
         
         self.rect.center = (self.x, self.y)
@@ -38,16 +38,16 @@ class Bola:
     def __init__(self):
         self.x = SCREEN_WIDTH // 2
         self.y = SCREEN_HEIGHT // 2
-        self.vel_x = random.choice([-4, 4])
-        self.vel_y = random.choice([-3, 3])
-        self.velocidade_base = 4
-        self.rect = pygame.Rect(self.x-10, self.y-10, 20, 20)
+        self.vel_x = random.choice([-6, 6])
+        self.vel_y = random.choice([-4, 4])
+        self.velocidade_base = 6
+        self.rect = pygame.Rect(self.x-15, self.y-15, 30, 30)
         
     def mover(self):
         self.x += self.vel_x
         self.y += self.vel_y
         
-        if self.y <= 158 or self.y >= SCREEN_HEIGHT - 110:
+        if self.y <= 237 or self.y >= SCREEN_HEIGHT - 165:
             self.vel_y = -self.vel_y
             
         self.rect.center = (self.x, self.y)
@@ -56,12 +56,12 @@ class Bola:
         if self.rect.colliderect(jogador.rect):
             self.vel_x = -self.vel_x
             if jogador.lado == "esquerda":
-                self.x = jogador.x + 50
+                self.x = jogador.x + 75
             else:
-                self.x = jogador.x - 50
+                self.x = jogador.x - 75
             
             velocidade_atual = math.sqrt(self.vel_x**2 + self.vel_y**2)
-            nova_velocidade = min(velocidade_atual * 1.1, 12)
+            nova_velocidade = min(velocidade_atual * 1.1, 18)
             fator = nova_velocidade / velocidade_atual
             self.vel_x *= fator
             self.vel_y *= fator
@@ -72,21 +72,21 @@ class Bola:
     def resetar(self):
         self.x = SCREEN_WIDTH // 2
         self.y = SCREEN_HEIGHT // 2
-        self.vel_x = random.choice([-4, 4])
-        self.vel_y = random.choice([-3, 3])
+        self.vel_x = random.choice([-6, 6])
+        self.vel_y = random.choice([-4, 4])
         
 class Moeda:
     def __init__(self):
-        self.x = random.randint(100, SCREEN_WIDTH-100)
-        self.y = random.randint(208, SCREEN_HEIGHT-160)
-        self.rect = pygame.Rect(self.x-15, self.y-15, 30, 30)
+        self.x = random.randint(150, SCREEN_WIDTH-150)
+        self.y = random.randint(312, SCREEN_HEIGHT-240)
+        self.rect = pygame.Rect(self.x-22, self.y-22, 45, 45)
         self.ativa = True
         
     def coletar(self, bola):
         if self.ativa and self.rect.colliderect(bola.rect):
             self.ativa = False
             velocidade_atual = math.sqrt(bola.vel_x**2 + bola.vel_y**2)
-            nova_velocidade = min(velocidade_atual * 1.3, 15)
+            nova_velocidade = min(velocidade_atual * 1.3, 22)
             fator = nova_velocidade / velocidade_atual
             bola.vel_x *= fator
             bola.vel_y *= fator
@@ -98,23 +98,23 @@ def carregar_recursos():
     tela_inicio = pygame.transform.scale(tela_inicio, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
     botao_jogar = pygame.image.load("imagens/jogar.bottão.png")
-    botao_jogar_scaled = pygame.transform.scale(botao_jogar, (300, 100))
-    botao_jogar_rect = botao_jogar_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-80))
+    botao_jogar_scaled = pygame.transform.scale(botao_jogar, (450, 150))
+    botao_jogar_rect = botao_jogar_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-120))
     
     fundo_segunda_tela = pygame.image.load("imagens/fundosegundatela.png")
     fundo_segunda_tela = pygame.transform.scale(fundo_segunda_tela, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
     grama_img = pygame.image.load("imagens/grama.png")
-    grama_scaled = pygame.transform.scale(grama_img, (200, 60))
-    grama_rect = grama_scaled.get_rect(center=(SCREEN_WIDTH/2, 80))
+    grama_scaled = pygame.transform.scale(grama_img, (300, 90))
+    grama_rect = grama_scaled.get_rect(center=(SCREEN_WIDTH/2, 120))
     
     rapida_img = pygame.image.load("imagens/rápida.png")
-    rapida_scaled = pygame.transform.scale(rapida_img, (200, 60))
-    rapida_rect = rapida_scaled.get_rect(center=(SCREEN_WIDTH/2, 420))
+    rapida_scaled = pygame.transform.scale(rapida_img, (300, 90))
+    rapida_rect = rapida_scaled.get_rect(center=(SCREEN_WIDTH/2, 630))
     
     saibro_img = pygame.image.load("imagens/saibro.png")
-    saibro_scaled = pygame.transform.scale(saibro_img, (200, 60))
-    saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 250))
+    saibro_scaled = pygame.transform.scale(saibro_img, (300, 90))
+    saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 375))
     
     fundo_grama = pygame.image.load("imagens/fundograma.png")
     fundo_grama = pygame.transform.scale(fundo_grama, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -136,34 +136,34 @@ def carregar_recursos():
     joao_img = pygame.image.load("imagens/jfonseca.png")
     resina_img = pygame.image.load("imagens/resina.png")
     
-    djoko_p1 = pygame.transform.scale(djoko_img, (80, 80))
-    djoko_p1_rect = djoko_p1.get_rect(center=(80, 240))
-    federer_p1 = pygame.transform.scale(federer_img, (80, 80))
-    federer_p1_rect = federer_p1.get_rect(center=(210, 240))
-    nadal_p1 = pygame.transform.scale(nadal_img, (80, 80))
-    nadal_p1_rect = nadal_p1.get_rect(center=(340, 240))
-    joao_p1 = pygame.transform.scale(joao_img, (80, 80))
-    joao_p1_rect = joao_p1.get_rect(center=(135, 360))
-    resina_p1 = pygame.transform.scale(resina_img, (80, 80))
-    resina_p1_rect = resina_p1.get_rect(center=(265, 360))
+    djoko_p1 = pygame.transform.scale(djoko_img, (120, 120))
+    djoko_p1_rect = djoko_p1.get_rect(center=(120, 360))
+    federer_p1 = pygame.transform.scale(federer_img, (120, 120))
+    federer_p1_rect = federer_p1.get_rect(center=(315, 360))
+    nadal_p1 = pygame.transform.scale(nadal_img, (120, 120))
+    nadal_p1_rect = nadal_p1.get_rect(center=(510, 360))
+    joao_p1 = pygame.transform.scale(joao_img, (120, 120))
+    joao_p1_rect = joao_p1.get_rect(center=(202, 540))
+    resina_p1 = pygame.transform.scale(resina_img, (120, 120))
+    resina_p1_rect = resina_p1.get_rect(center=(397, 540))
     
-    djoko_p2 = pygame.transform.scale(djoko_img, (80, 80))
-    djoko_p2_rect = djoko_p2.get_rect(center=(510, 240))
-    federer_p2 = pygame.transform.scale(federer_img, (80, 80))
-    federer_p2_rect = federer_p2.get_rect(center=(640, 240))
-    nadal_p2 = pygame.transform.scale(nadal_img, (80, 80))
-    nadal_p2_rect = nadal_p2.get_rect(center=(770, 240))
-    joao_p2 = pygame.transform.scale(joao_img, (80, 80))
-    joao_p2_rect = joao_p2.get_rect(center=(575, 360))
-    resina_p2 = pygame.transform.scale(resina_img, (80, 80))
-    resina_p2_rect = resina_p2.get_rect(center=(705, 360))
+    djoko_p2 = pygame.transform.scale(djoko_img, (120, 120))
+    djoko_p2_rect = djoko_p2.get_rect(center=(765, 360))
+    federer_p2 = pygame.transform.scale(federer_img, (120, 120))
+    federer_p2_rect = federer_p2.get_rect(center=(960, 360))
+    nadal_p2 = pygame.transform.scale(nadal_img, (120, 120))
+    nadal_p2_rect = nadal_p2.get_rect(center=(1155, 360))
+    joao_p2 = pygame.transform.scale(joao_img, (120, 120))
+    joao_p2_rect = joao_p2.get_rect(center=(862, 540))
+    resina_p2 = pygame.transform.scale(resina_img, (120, 120))
+    resina_p2_rect = resina_p2.get_rect(center=(1057, 540))
     
     iniciar_jogo_img = pygame.image.load("imagens/iniciarjogo.png")
-    iniciar_jogo_scaled = pygame.transform.scale(iniciar_jogo_img, (120, 40))
-    iniciar_jogo_rect = iniciar_jogo_scaled.get_rect(center=(SCREEN_WIDTH/2, 470))
+    iniciar_jogo_scaled = pygame.transform.scale(iniciar_jogo_img, (180, 60))
+    iniciar_jogo_rect = iniciar_jogo_scaled.get_rect(center=(SCREEN_WIDTH/2, 705))
     
     bolinha_img = pygame.image.load("imagens/bolinha.png")
-    bolinha_scaled = pygame.transform.scale(bolinha_img, (20, 20))
+    bolinha_scaled = pygame.transform.scale(bolinha_img, (30, 30))
     
     personagens = {
         'Djokovic': djoko_img,
@@ -271,26 +271,26 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
         
         fonte = pygame.font.Font(None, 22)
         nome_djoko_p1 = fonte.render("Novak Djokovic", True, (255, 255, 255))
-        screen.blit(nome_djoko_p1, (15, 285))
+        screen.blit(nome_djoko_p1, (22, 427))
         nome_federer_p1 = fonte.render("Roger Federer", True, (255, 255, 255))
-        screen.blit(nome_federer_p1, (158, 285))
+        screen.blit(nome_federer_p1, (237, 427))
         nome_nadal_p1 = fonte.render("Rafael Nadal", True, (255, 255, 255))
-        screen.blit(nome_nadal_p1, (295, 285))
+        screen.blit(nome_nadal_p1, (442, 427))
         nome_joao_p1 = fonte.render("João Fonseca", True, (255, 255, 255))
-        screen.blit(nome_joao_p1, (84, 405))
+        screen.blit(nome_joao_p1, (126, 607))
         nome_resina_p1 = fonte.render("Mr. Resina", True, (255, 255, 255))
-        screen.blit(nome_resina_p1, (225, 405))
+        screen.blit(nome_resina_p1, (337, 607))
         
         nome_djoko_p2 = fonte.render("Novak Djokovic", True, (255, 255, 255))
-        screen.blit(nome_djoko_p2, (445, 285))
+        screen.blit(nome_djoko_p2, (667, 427))
         nome_federer_p2 = fonte.render("Roger Federer", True, (255, 255, 255))
-        screen.blit(nome_federer_p2, (588, 285))
+        screen.blit(nome_federer_p2, (882, 427))
         nome_nadal_p2 = fonte.render("Rafael Nadal", True, (255, 255, 255))
-        screen.blit(nome_nadal_p2, (728, 285))
+        screen.blit(nome_nadal_p2, (1092, 427))
         nome_joao_p2 = fonte.render("João Fonseca", True, (255, 255, 255))
-        screen.blit(nome_joao_p2, (527, 405))
+        screen.blit(nome_joao_p2, (790, 607))
         nome_resina_p2 = fonte.render("Mr. Resina", True, (255, 255, 255))
-        screen.blit(nome_resina_p2, (665, 405))
+        screen.blit(nome_resina_p2, (997, 607))
         
         if personagem_player1 and personagem_player2:
             screen.blit(recursos['iniciar_jogo_scaled'], recursos['iniciar_jogo_rect'])
@@ -325,32 +325,32 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moe
     elif tipo_quadra == "rapida":
         screen.blit(recursos['quadra_rapida'], (0, 0))
     
-    pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH//2, 158), (SCREEN_WIDTH//2, SCREEN_HEIGHT-110), 3)
+    pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH//2, 237), (SCREEN_WIDTH//2, SCREEN_HEIGHT-165), 4)
     
     img1 = obter_imagem_personagem(recursos, jogador1.personagem)
     img2 = obter_imagem_personagem(recursos, jogador2.personagem)
     
     if img1:
-        img1_scaled = pygame.transform.scale(img1, (80, 80))
-        screen.blit(img1_scaled, (jogador1.x-40, jogador1.y-40))
+        img1_scaled = pygame.transform.scale(img1, (120, 120))
+        screen.blit(img1_scaled, (jogador1.x-60, jogador1.y-60))
     
     if img2:
-        img2_scaled = pygame.transform.scale(img2, (80, 80))
-        screen.blit(img2_scaled, (jogador2.x-40, jogador2.y-40))
+        img2_scaled = pygame.transform.scale(img2, (120, 120))
+        screen.blit(img2_scaled, (jogador2.x-60, jogador2.y-60))
     
-    screen.blit(recursos['bolinha'], (int(bola.x-10), int(bola.y-10)))
+    screen.blit(recursos['bolinha'], (int(bola.x-15), int(bola.y-15)))
     
     for moeda in moedas:
         if moeda.ativa:
-            pygame.draw.circle(screen, (255, 215, 0), (moeda.x, moeda.y), 15)
-            pygame.draw.circle(screen, (255, 255, 0), (moeda.x, moeda.y), 10)
+            pygame.draw.circle(screen, (255, 215, 0), (moeda.x, moeda.y), 22)
+            pygame.draw.circle(screen, (255, 255, 0), (moeda.x, moeda.y), 15)
     
-    fonte = pygame.font.Font(None, 36)
+    fonte = pygame.font.Font(None, 54)
     texto_pontos = fonte.render(f"{pontos1} - {pontos2}", True, (255, 255, 255))
-    screen.blit(texto_pontos, (SCREEN_WIDTH//2 - 30, 20))
+    screen.blit(texto_pontos, (SCREEN_WIDTH//2 - 45, 30))
     
     if aguardando_ponto and contador_ponto > 0:
-        font_countdown = pygame.font.Font(None, 150)
+        font_countdown = pygame.font.Font(None, 225)
         texto_countdown = font_countdown.render(str(contador_ponto), True, (255, 255, 255))
         texto_rect = texto_countdown.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
         screen.blit(texto_countdown, texto_rect)

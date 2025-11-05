@@ -20,7 +20,7 @@ tipo_quadra = None
 
 contador = 3
 tempo_countdown = 0
-font_countdown = pygame.font.Font(None, 200)
+font_countdown = pygame.font.Font(None, 300)
 
 recursos = carregar_recursos()
 fonte = pygame.font.Font(None, 22)
@@ -106,8 +106,8 @@ while rodando:
             tempo_countdown = pygame.time.get_ticks()
             if contador < 1:
                 estado_atual = TELA_JOGO
-                jogador1 = Jogador(100, SCREEN_HEIGHT//2, personagem_player1, "esquerda")
-                jogador2 = Jogador(SCREEN_WIDTH-100, SCREEN_HEIGHT//2, personagem_player2, "direita")
+                jogador1 = Jogador(150, SCREEN_HEIGHT//2, personagem_player1, "esquerda")
+                jogador2 = Jogador(SCREEN_WIDTH-150, SCREEN_HEIGHT//2, personagem_player2, "direita")
                 bola = Bola()
                 moedas = []
                 pontos_player1 = 0
@@ -121,10 +121,10 @@ while rodando:
                 tempo_ponto = pygame.time.get_ticks()
                 if contador_ponto < 1:
                     aguardando_ponto = False
-                    jogador1.x = 100
+                    jogador1.x = 150
                     jogador1.y = SCREEN_HEIGHT//2
                     jogador1.rect.center = (jogador1.x, jogador1.y)
-                    jogador2.x = SCREEN_WIDTH-100
+                    jogador2.x = SCREEN_WIDTH-150
                     jogador2.y = SCREEN_HEIGHT//2
                     jogador2.rect.center = (jogador2.x, jogador2.y)
                     bola.resetar()
