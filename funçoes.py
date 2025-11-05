@@ -10,7 +10,7 @@ class Jogador:
         self.personagem = personagem
         self.lado = lado
         self.velocidade = 5
-        self.rect = pygame.Rect(x-25, y-25, 50, 50)
+        self.rect = pygame.Rect(x-40, y-40, 80, 80)
         
     def mover(self, keys):
         if self.lado == "esquerda":
@@ -18,18 +18,18 @@ class Jogador:
                 self.y -= self.velocidade
             if keys[pygame.K_s] and self.y < SCREEN_HEIGHT - 100:
                 self.y += self.velocidade
-            if keys[pygame.K_a] and self.x > 50:
+            if keys[pygame.K_a] and self.x > 80:
                 self.x -= self.velocidade
-            if keys[pygame.K_d] and self.x < SCREEN_WIDTH//2 - 50:
+            if keys[pygame.K_d] and self.x < SCREEN_WIDTH//2 - 80:
                 self.x += self.velocidade
         else:
             if keys[pygame.K_UP] and self.y > 100:
                 self.y -= self.velocidade
             if keys[pygame.K_DOWN] and self.y < SCREEN_HEIGHT - 100:
                 self.y += self.velocidade
-            if keys[pygame.K_LEFT] and self.x > SCREEN_WIDTH//2 + 50:
+            if keys[pygame.K_LEFT] and self.x > SCREEN_WIDTH//2 + 80:
                 self.x -= self.velocidade
-            if keys[pygame.K_RIGHT] and self.x < SCREEN_WIDTH - 50:
+            if keys[pygame.K_RIGHT] and self.x < SCREEN_WIDTH - 80:
                 self.x += self.velocidade
         
         self.rect.center = (self.x, self.y)
@@ -56,9 +56,9 @@ class Bola:
         if self.rect.colliderect(jogador.rect):
             self.vel_x = -self.vel_x
             if jogador.lado == "esquerda":
-                self.x = jogador.x + 35
+                self.x = jogador.x + 50
             else:
-                self.x = jogador.x - 35
+                self.x = jogador.x - 50
             
             velocidade_atual = math.sqrt(self.vel_x**2 + self.vel_y**2)
             nova_velocidade = min(velocidade_atual * 1.1, 12)
@@ -313,7 +313,7 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
 def obter_imagem_personagem(recursos, personagem):
     return recursos['personagens'].get(personagem)
 
-def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moedas, pontos1, pontos2):
+def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moedas, pontos1, pontos2, aguardando_ponto=False, contador_ponto=0):
     if tipo_quadra == "grama":
         screen.blit(recursos['quadra_grama'], (0, 0))
     elif tipo_quadra == "saibro":
@@ -327,12 +327,12 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moe
     img2 = obter_imagem_personagem(recursos, jogador2.personagem)
     
     if img1:
-        img1_scaled = pygame.transform.scale(img1, (50, 50))
-        screen.blit(img1_scaled, (jogador1.x-25, jogador1.y-25))
+        img1_scaled = pygame.transform.scale(img1, (80, 80))
+        screen.blit(img1_scaled, (jogador1.x-40, jogador1.y-40))
     
     if img2:
-        img2_scaled = pygame.transform.scale(img2, (50, 50))
-        screen.blit(img2_scaled, (jogador2.x-25, jogador2.y-25))
+        img2_scaled = pygame.transform.scale(img2, (80, 80))
+        screen.blit(img2_scaled, (jogador2.x-40, jogador2.y-40))
     
     pygame.draw.circle(screen, (255, 255, 0), (int(bola.x), int(bola.y)), 10)
     
@@ -344,3 +344,9 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moe
     fonte = pygame.font.Font(None, 36)
     texto_pontos = fonte.render(f"{pontos1} - {pontos2}", True, (255, 255, 255))
     screen.blit(texto_pontos, (SCREEN_WIDTH//2 - 30, 20))
+    
+    if aguardando_ponto and contador_ponto > 0:
+        font_countdown = pygame.font.Font(None, 150)
+        texto_countdown = font_countdown.render(str(contador_ponto), True, (255, 255, 255))
+        texto_rect = texto_countdown.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
+        screen.blit(texto_countdown, texto_rect)
