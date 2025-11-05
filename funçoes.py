@@ -162,6 +162,9 @@ def carregar_recursos():
     iniciar_jogo_scaled = pygame.transform.scale(iniciar_jogo_img, (120, 40))
     iniciar_jogo_rect = iniciar_jogo_scaled.get_rect(center=(SCREEN_WIDTH/2, 470))
     
+    bolinha_img = pygame.image.load("imagens/bolinha.png")
+    bolinha_scaled = pygame.transform.scale(bolinha_img, (20, 20))
+    
     personagens = {
         'Djokovic': djoko_img,
         'Federer': federer_img,
@@ -172,6 +175,7 @@ def carregar_recursos():
     
     return {
         'tela_inicio': tela_inicio,
+        'bolinha': bolinha_scaled,
         'personagens': personagens,
         'botao_jogar_scaled': botao_jogar_scaled,
         'botao_jogar_rect': botao_jogar_rect,
@@ -334,7 +338,7 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moe
         img2_scaled = pygame.transform.scale(img2, (80, 80))
         screen.blit(img2_scaled, (jogador2.x-40, jogador2.y-40))
     
-    pygame.draw.circle(screen, (255, 255, 0), (int(bola.x), int(bola.y)), 10)
+    screen.blit(recursos['bolinha'], (int(bola.x-10), int(bola.y-10)))
     
     for moeda in moedas:
         if moeda.ativa:
