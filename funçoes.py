@@ -14,18 +14,18 @@ class Jogador:
         
     def mover(self, keys):
         if self.lado == "esquerda":
-            if keys[pygame.K_w] and self.y > 100:
+            if keys[pygame.K_w] and self.y > 158:
                 self.y -= self.velocidade
-            if keys[pygame.K_s] and self.y < SCREEN_HEIGHT - 100:
+            if keys[pygame.K_s] and self.y < SCREEN_HEIGHT - 110:
                 self.y += self.velocidade
             if keys[pygame.K_a] and self.x > 80:
                 self.x -= self.velocidade
             if keys[pygame.K_d] and self.x < SCREEN_WIDTH//2 - 80:
                 self.x += self.velocidade
         else:
-            if keys[pygame.K_UP] and self.y > 100:
+            if keys[pygame.K_UP] and self.y > 158:
                 self.y -= self.velocidade
-            if keys[pygame.K_DOWN] and self.y < SCREEN_HEIGHT - 100:
+            if keys[pygame.K_DOWN] and self.y < SCREEN_HEIGHT - 110:
                 self.y += self.velocidade
             if keys[pygame.K_LEFT] and self.x > SCREEN_WIDTH//2 + 80:
                 self.x -= self.velocidade
@@ -47,7 +47,7 @@ class Bola:
         self.x += self.vel_x
         self.y += self.vel_y
         
-        if self.y <= 100 or self.y >= SCREEN_HEIGHT - 100:
+        if self.y <= 158 or self.y >= SCREEN_HEIGHT - 110:
             self.vel_y = -self.vel_y
             
         self.rect.center = (self.x, self.y)
@@ -78,7 +78,7 @@ class Bola:
 class Moeda:
     def __init__(self):
         self.x = random.randint(100, SCREEN_WIDTH-100)
-        self.y = random.randint(150, SCREEN_HEIGHT-150)
+        self.y = random.randint(208, SCREEN_HEIGHT-160)
         self.rect = pygame.Rect(self.x-15, self.y-15, 30, 30)
         self.ativa = True
         
@@ -325,7 +325,7 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moe
     elif tipo_quadra == "rapida":
         screen.blit(recursos['quadra_rapida'], (0, 0))
     
-    pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH//2, 100), (SCREEN_WIDTH//2, SCREEN_HEIGHT-100), 3)
+    pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH//2, 158), (SCREEN_WIDTH//2, SCREEN_HEIGHT-110), 3)
     
     img1 = obter_imagem_personagem(recursos, jogador1.personagem)
     img2 = obter_imagem_personagem(recursos, jogador2.personagem)
