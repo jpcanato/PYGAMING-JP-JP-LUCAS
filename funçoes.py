@@ -165,8 +165,7 @@ def carregar_recursos():
     bolinha_img = pygame.image.load("imagens/bolinha.png")
     bolinha_scaled = pygame.transform.scale(bolinha_img, (30, 30))
     
-    placar_img = pygame.image.load("imagens/placar.png")
-    placar_scaled = pygame.transform.scale(placar_img, (400, 120))
+
     
     personagens = {
         'Djokovic': djoko_img,
@@ -217,7 +216,7 @@ def carregar_recursos():
         'resina_p2_rect': resina_p2_rect,
         'iniciar_jogo_scaled': iniciar_jogo_scaled,
         'iniciar_jogo_rect': iniciar_jogo_rect,
-        'placar': placar_scaled
+
     }
 
 def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_player1, personagem_player2, contador=0, font_countdown=None):
@@ -390,33 +389,27 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
         reiniciar_rect = texto_reiniciar.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 + 40))
         screen.blit(texto_reiniciar, reiniciar_rect)
     else:
-        # Placar
-        placar_x = 20
-        placar_y = SCREEN_HEIGHT - 140
-        screen.blit(recursos['placar'], (placar_x, placar_y))
+        # Placar simples no topo
+        fonte_nome = pygame.font.Font(None, 32)
+        fonte_placar = pygame.font.Font(None, 36)
         
-        # Nomes dos jogadores (lado esquerdo)
-        fonte_nome = pygame.font.Font(None, 24)
-        nome1 = fonte_nome.render(jogador1.personagem, True, (0, 0, 0))
-        screen.blit(nome1, (placar_x + 15, placar_y + 25))
-        nome2 = fonte_nome.render(jogador2.personagem, True, (0, 0, 0))
-        screen.blit(nome2, (placar_x + 15, placar_y + 75))
+        # Player 1
+        nome1 = fonte_nome.render(jogador1.personagem, True, (255, 255, 255))
+        screen.blit(nome1, (50, 30))
+        games1_text = fonte_placar.render(f"Games: {games1}", True, (255, 255, 255))
+        screen.blit(games1_text, (50, 60))
+        pontos1_text = fonte_placar.render(f"Pontos: {pontos_tenis(pontos1, pontos2, 1)}", True, (255, 255, 255))
+        screen.blit(pontos1_text, (50, 90))
         
-        # Games (primeira coluna direita)
-        fonte_placar = pygame.font.Font(None, 28)
-        games1_text = fonte_placar.render(str(games1), True, (0, 0, 0))
-        games1_rect = games1_text.get_rect(center=(placar_x + 300, placar_y + 35))
-        screen.blit(games1_text, games1_rect)
-        games2_text = fonte_placar.render(str(games2), True, (0, 0, 0))
-        games2_rect = games2_text.get_rect(center=(placar_x + 300, placar_y + 85))
+        # Player 2
+        nome2 = fonte_nome.render(jogador2.personagem, True, (255, 255, 255))
+        nome2_rect = nome2.get_rect(topright=(SCREEN_WIDTH - 50, 30))
+        screen.blit(nome2, nome2_rect)
+        games2_text = fonte_placar.render(f"Games: {games2}", True, (255, 255, 255))
+        games2_rect = games2_text.get_rect(topright=(SCREEN_WIDTH - 50, 60))
         screen.blit(games2_text, games2_rect)
-        
-        # Pontos (segunda coluna direita)
-        pontos1_text = fonte_placar.render(pontos_tenis(pontos1, pontos2, 1), True, (0, 0, 0))
-        pontos1_rect = pontos1_text.get_rect(center=(placar_x + 360, placar_y + 35))
-        screen.blit(pontos1_text, pontos1_rect)
-        pontos2_text = fonte_placar.render(pontos_tenis(pontos1, pontos2, 2), True, (0, 0, 0))
-        pontos2_rect = pontos2_text.get_rect(center=(placar_x + 360, placar_y + 85))
+        pontos2_text = fonte_placar.render(f"Pontos: {pontos_tenis(pontos1, pontos2, 2)}", True, (255, 255, 255))
+        pontos2_rect = pontos2_text.get_rect(topright=(SCREEN_WIDTH - 50, 90))
         screen.blit(pontos2_text, pontos2_rect)
     
     if aguardando_ponto and contador_ponto > 0:
