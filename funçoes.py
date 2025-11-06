@@ -165,6 +165,9 @@ def carregar_recursos():
     bolinha_img = pygame.image.load("imagens/bolinha.png")
     bolinha_scaled = pygame.transform.scale(bolinha_img, (30, 30))
     
+    placar_img = pygame.image.load("imagens/placar.png")
+    placar_scaled = pygame.transform.scale(placar_img, (400, 120))
+    
     personagens = {
         'Djokovic': djoko_img,
         'Federer': federer_img,
@@ -213,7 +216,8 @@ def carregar_recursos():
         'resina_p2': resina_p2,
         'resina_p2_rect': resina_p2_rect,
         'iniciar_jogo_scaled': iniciar_jogo_scaled,
-        'iniciar_jogo_rect': iniciar_jogo_rect
+        'iniciar_jogo_rect': iniciar_jogo_rect,
+        'placar': placar_scaled
     }
 
 def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_player1, personagem_player2, contador=0, font_countdown=None):
@@ -352,12 +356,19 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
                 pontos.append((x, y))
             pygame.draw.polygon(screen, (255, 255, 0), pontos)
     
-    def pontos_tenis(pontos):
-        if pontos == 0: return "0"
-        elif pontos == 1: return "15"
-        elif pontos == 2: return "30"
-        elif pontos == 3: return "40"
-        else: return "AD" if pontos > 3 else "40"
+    def pontos_tenis(pontos1, pontos2, jogador):
+        if pontos1 >= 3 and pontos2 >= 3:
+            if pontos1 == pontos2: return "40"
+            elif jogador == 1:
+                return "AD" if pontos1 > pontos2 else "40"
+            else:
+                return "AD" if pontos2 > pontos1 else "40"
+        else:
+            p = pontos1 if jogador == 1 else pontos2
+            if p == 0: return "0"
+            elif p == 1: return "15"
+            elif p == 2: return "30"
+            else: return "40"
     
     fonte = pygame.font.Font(None, 54)
     if vencedor:
@@ -379,10 +390,34 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
         reiniciar_rect = texto_reiniciar.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 + 40))
         screen.blit(texto_reiniciar, reiniciar_rect)
     else:
-        texto_games = fonte.render(f"Games: {games1} - {games2}", True, (255, 255, 255))
-        screen.blit(texto_games, (SCREEN_WIDTH//2 - 90, 30))
-        texto_pontos = fonte.render(f"{pontos_tenis(pontos1)} - {pontos_tenis(pontos2)}", True, (255, 255, 255))
-        screen.blit(texto_pontos, (SCREEN_WIDTH//2 - 45, 80))
+        # Placar
+        placar_x = 20
+        placar_y = SCREEN_HEIGHT - 140
+        screen.blit(recursos['placar'], (placar_x, placar_y))
+        
+        # Nomes dos jogadores (lado esquerdo)
+        fonte_nome = pygame.font.Font(None, 24)
+        nome1 = fonte_nome.render(jogador1.personagem, True, (0, 0, 0))
+        screen.blit(nome1, (placar_x + 15, placar_y + 25))
+        nome2 = fonte_nome.render(jogador2.personagem, True, (0, 0, 0))
+        screen.blit(nome2, (placar_x + 15, placar_y + 75))
+        
+        # Games (primeira coluna direita)
+        fonte_placar = pygame.font.Font(None, 28)
+        games1_text = fonte_placar.render(str(games1), True, (0, 0, 0))
+        games1_rect = games1_text.get_rect(center=(placar_x + 300, placar_y + 35))
+        screen.blit(games1_text, games1_rect)
+        games2_text = fonte_placar.render(str(games2), True, (0, 0, 0))
+        games2_rect = games2_text.get_rect(center=(placar_x + 300, placar_y + 85))
+        screen.blit(games2_text, games2_rect)
+        
+        # Pontos (segunda coluna direita)
+        pontos1_text = fonte_placar.render(pontos_tenis(pontos1, pontos2, 1), True, (0, 0, 0))
+        pontos1_rect = pontos1_text.get_rect(center=(placar_x + 360, placar_y + 35))
+        screen.blit(pontos1_text, pontos1_rect)
+        pontos2_text = fonte_placar.render(pontos_tenis(pontos1, pontos2, 2), True, (0, 0, 0))
+        pontos2_rect = pontos2_text.get_rect(center=(placar_x + 360, placar_y + 85))
+        screen.blit(pontos2_text, pontos2_rect)
     
     if aguardando_ponto and contador_ponto > 0:
         font_countdown = pygame.font.Font(None, 225)

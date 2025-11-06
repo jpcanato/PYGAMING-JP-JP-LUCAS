@@ -169,23 +169,33 @@ while rodando:
             
             if bola.x < 0:
                 pontos_player2 += 1
+                # Verificar se ganha o game
                 if pontos_player2 >= 4 and pontos_player2 - pontos_player1 >= 2:
                     games_player2 += 1
                     pontos_player1 = 0
                     pontos_player2 = 0
                     if games_player2 >= 2:
                         vencedor = "Player 2"
+                # Se estava em vantagem do player 1, volta para 40-40
+                elif pontos_player1 >= 4 and pontos_player2 >= 4 and pontos_player1 > pontos_player2:
+                    pontos_player1 = 3
+                    pontos_player2 = 3
                 aguardando_ponto = True
                 contador_ponto = 3
                 tempo_ponto = pygame.time.get_ticks()
             elif bola.x > SCREEN_WIDTH:
                 pontos_player1 += 1
+                # Verificar se ganha o game
                 if pontos_player1 >= 4 and pontos_player1 - pontos_player2 >= 2:
                     games_player1 += 1
                     pontos_player1 = 0
                     pontos_player2 = 0
                     if games_player1 >= 2:
                         vencedor = "Player 1"
+                # Se estava em vantagem do player 2, volta para 40-40
+                elif pontos_player2 >= 4 and pontos_player1 >= 4 and pontos_player2 > pontos_player1:
+                    pontos_player1 = 3
+                    pontos_player2 = 3
                 aguardando_ponto = True
                 contador_ponto = 3
                 tempo_ponto = pygame.time.get_ticks()
