@@ -317,7 +317,7 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
 def obter_imagem_personagem(recursos, personagem):
     return recursos['personagens'].get(personagem)
 
-def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, estrelas, pontos1, pontos2, aguardando_ponto=False, contador_ponto=0):
+def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, estrelas, pontos1, pontos2, games1, games2, vencedor, aguardando_ponto=False, contador_ponto=0):
     if tipo_quadra == "grama":
         screen.blit(recursos['quadra_grama'], (0, 0))
     elif tipo_quadra == "saibro":
@@ -352,9 +352,37 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
                 pontos.append((x, y))
             pygame.draw.polygon(screen, (255, 255, 0), pontos)
     
+    def pontos_tenis(pontos):
+        if pontos == 0: return "0"
+        elif pontos == 1: return "15"
+        elif pontos == 2: return "30"
+        elif pontos == 3: return "40"
+        else: return "AD" if pontos > 3 else "40"
+    
     fonte = pygame.font.Font(None, 54)
-    texto_pontos = fonte.render(f"{pontos1} - {pontos2}", True, (255, 255, 255))
-    screen.blit(texto_pontos, (SCREEN_WIDTH//2 - 45, 30))
+    if vencedor:
+        # Fundo semi-transparente
+        overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        overlay.set_alpha(128)
+        overlay.fill((0, 0, 0))
+        screen.blit(overlay, (0, 0))
+        
+        # Mensagem de vitória
+        fonte_grande = pygame.font.Font(None, 72)
+        texto_vencedor = fonte_grande.render(f"{vencedor} Venceu!", True, (255, 255, 0))
+        vencedor_rect = texto_vencedor.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 - 30))
+        screen.blit(texto_vencedor, vencedor_rect)
+        
+        # Instrução
+        fonte_media = pygame.font.Font(None, 36)
+        texto_reiniciar = fonte_media.render("Pressione ESPAÇO para voltar ao início", True, (255, 255, 255))
+        reiniciar_rect = texto_reiniciar.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 + 40))
+        screen.blit(texto_reiniciar, reiniciar_rect)
+    else:
+        texto_games = fonte.render(f"Games: {games1} - {games2}", True, (255, 255, 255))
+        screen.blit(texto_games, (SCREEN_WIDTH//2 - 90, 30))
+        texto_pontos = fonte.render(f"{pontos_tenis(pontos1)} - {pontos_tenis(pontos2)}", True, (255, 255, 255))
+        screen.blit(texto_pontos, (SCREEN_WIDTH//2 - 45, 80))
     
     if aguardando_ponto and contador_ponto > 0:
         font_countdown = pygame.font.Font(None, 225)

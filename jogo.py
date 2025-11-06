@@ -31,6 +31,9 @@ bola = None
 estrelas = []
 pontos_player1 = 0
 pontos_player2 = 0
+games_player1 = 0
+games_player2 = 0
+vencedor = None
 tempo_estrela = 0
 contador_ponto = 3
 tempo_ponto = 0
@@ -49,11 +52,25 @@ while rodando:
                     estado_atual = TELA_MODO_JOGO
                     personagem_player1 = None
                     personagem_player2 = None
-                elif estado_atual == TELA_JOGO:
+                elif estado_atual == TELA_JOGO and not vencedor:
                     estado_atual = TELA_INICIO
                     jogador1 = None
                     jogador2 = None
                     bola = None
+            elif evento.key == pygame.K_SPACE:
+                if estado_atual == TELA_JOGO and vencedor:
+                    estado_atual = TELA_INICIO
+                    personagem_player1 = None
+                    personagem_player2 = None
+                    tipo_quadra = None
+                    jogador1 = None
+                    jogador2 = None
+                    bola = None
+                    pontos_player1 = 0
+                    pontos_player2 = 0
+                    games_player1 = 0
+                    games_player2 = 0
+                    vencedor = None
         if evento.type == pygame.MOUSEBUTTONDOWN:
             if estado_atual == TELA_INICIO:
                 if recursos['botao_jogar_rect'].collidepoint(evento.pos):
@@ -112,6 +129,9 @@ while rodando:
                 estrelas = []
                 pontos_player1 = 0
                 pontos_player2 = 0
+                games_player1 = 0
+                games_player2 = 0
+                vencedor = None
                 tempo_estrela = pygame.time.get_ticks()
     
     if estado_atual == TELA_JOGO:
@@ -130,7 +150,7 @@ while rodando:
                     bola.resetar()
                     estrelas = []
                     tempo_estrela = pygame.time.get_ticks()
-        else:
+        elif not vencedor:
             keys = pygame.key.get_pressed()
             jogador1.mover(keys)
             jogador2.mover(keys)
@@ -149,17 +169,29 @@ while rodando:
             
             if bola.x < 0:
                 pontos_player2 += 1
+                if pontos_player2 >= 4 and pontos_player2 - pontos_player1 >= 2:
+                    games_player2 += 1
+                    pontos_player1 = 0
+                    pontos_player2 = 0
+                    if games_player2 >= 2:
+                        vencedor = "Player 2"
                 aguardando_ponto = True
                 contador_ponto = 3
                 tempo_ponto = pygame.time.get_ticks()
             elif bola.x > SCREEN_WIDTH:
                 pontos_player1 += 1
+                if pontos_player1 >= 4 and pontos_player1 - pontos_player2 >= 2:
+                    games_player1 += 1
+                    pontos_player1 = 0
+                    pontos_player2 = 0
+                    if games_player1 >= 2:
+                        vencedor = "Player 1"
                 aguardando_ponto = True
                 contador_ponto = 3
                 tempo_ponto = pygame.time.get_ticks()
     
     if estado_atual == TELA_JOGO:
-        renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, estrelas, pontos_player1, pontos_player2, aguardando_ponto, contador_ponto)
+        renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, estrelas, pontos_player1, pontos_player2, games_player1, games_player2, vencedor, aguardando_ponto, contador_ponto)
     else:
         renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_player1, personagem_player2, contador, font_countdown)
     
