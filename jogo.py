@@ -1,5 +1,5 @@
 from imports import *
-from funçoes import carregar_recursos, renderizar_tela, renderizar_jogo, Jogador, Bola, Moeda
+from funçoes import carregar_recursos, renderizar_tela, renderizar_jogo, Jogador, Bola, Estrela
 
 pygame.init()
 pygame.mixer.init()
@@ -28,10 +28,10 @@ fonte = pygame.font.Font(None, 22)
 jogador1 = None
 jogador2 = None
 bola = None
-moedas = []
+estrelas = []
 pontos_player1 = 0
 pontos_player2 = 0
-tempo_moeda = 0
+tempo_estrela = 0
 contador_ponto = 3
 tempo_ponto = 0
 aguardando_ponto = False
@@ -106,13 +106,13 @@ while rodando:
             tempo_countdown = pygame.time.get_ticks()
             if contador < 1:
                 estado_atual = TELA_JOGO
-                jogador1 = Jogador(150, SCREEN_HEIGHT//2, personagem_player1, "esquerda")
-                jogador2 = Jogador(SCREEN_WIDTH-150, SCREEN_HEIGHT//2, personagem_player2, "direita")
+                jogador1 = Jogador(120, SCREEN_HEIGHT//2, personagem_player1, "esquerda")
+                jogador2 = Jogador(SCREEN_WIDTH-120, SCREEN_HEIGHT//2, personagem_player2, "direita")
                 bola = Bola()
-                moedas = []
+                estrelas = []
                 pontos_player1 = 0
                 pontos_player2 = 0
-                tempo_moeda = pygame.time.get_ticks()
+                tempo_estrela = pygame.time.get_ticks()
     
     if estado_atual == TELA_JOGO:
         if aguardando_ponto:
@@ -121,15 +121,15 @@ while rodando:
                 tempo_ponto = pygame.time.get_ticks()
                 if contador_ponto < 1:
                     aguardando_ponto = False
-                    jogador1.x = 150
+                    jogador1.x = 120
                     jogador1.y = SCREEN_HEIGHT//2
                     jogador1.rect.center = (jogador1.x, jogador1.y)
-                    jogador2.x = SCREEN_WIDTH-150
+                    jogador2.x = SCREEN_WIDTH-120
                     jogador2.y = SCREEN_HEIGHT//2
                     jogador2.rect.center = (jogador2.x, jogador2.y)
                     bola.resetar()
-                    moedas = []
-                    tempo_moeda = pygame.time.get_ticks()
+                    estrelas = []
+                    tempo_estrela = pygame.time.get_ticks()
         else:
             keys = pygame.key.get_pressed()
             jogador1.mover(keys)
@@ -139,12 +139,12 @@ while rodando:
             bola.rebater(jogador1)
             bola.rebater(jogador2)
             
-            if pygame.time.get_ticks() - tempo_moeda > 5000 and len(moedas) < 3:
-                moedas.append(Moeda())
-                tempo_moeda = pygame.time.get_ticks()
+            if pygame.time.get_ticks() - tempo_estrela > 5000 and len(estrelas) < 3:
+                estrelas.append(Estrela())
+                tempo_estrela = pygame.time.get_ticks()
             
-            for moeda in moedas:
-                if moeda.coletar(bola):
+            for estrela in estrelas:
+                if estrela.coletar(bola):
                     break
             
             if bola.x < 0:
@@ -159,7 +159,7 @@ while rodando:
                 tempo_ponto = pygame.time.get_ticks()
     
     if estado_atual == TELA_JOGO:
-        renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moedas, pontos_player1, pontos_player2, aguardando_ponto, contador_ponto)
+        renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, estrelas, pontos_player1, pontos_player2, aguardando_ponto, contador_ponto)
     else:
         renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_player1, personagem_player2, contador, font_countdown)
     

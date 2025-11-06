@@ -75,7 +75,7 @@ class Bola:
         self.vel_x = random.choice([-6, 6])
         self.vel_y = random.choice([-4, 4])
         
-class Moeda:
+class Estrela:
     def __init__(self):
         self.x = random.randint(150, SCREEN_WIDTH-150)
         self.y = random.randint(312, SCREEN_HEIGHT-240)
@@ -317,7 +317,7 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
 def obter_imagem_personagem(recursos, personagem):
     return recursos['personagens'].get(personagem)
 
-def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moedas, pontos1, pontos2, aguardando_ponto=False, contador_ponto=0):
+def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, estrelas, pontos1, pontos2, aguardando_ponto=False, contador_ponto=0):
     if tipo_quadra == "grama":
         screen.blit(recursos['quadra_grama'], (0, 0))
     elif tipo_quadra == "saibro":
@@ -340,10 +340,17 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, moe
     
     screen.blit(recursos['bolinha'], (int(bola.x-15), int(bola.y-15)))
     
-    for moeda in moedas:
-        if moeda.ativa:
-            pygame.draw.circle(screen, (255, 215, 0), (moeda.x, moeda.y), 22)
-            pygame.draw.circle(screen, (255, 255, 0), (moeda.x, moeda.y), 15)
+    for estrela in estrelas:
+        if estrela.ativa:
+            # Desenhar estrela
+            pontos = []
+            for i in range(10):
+                angulo = i * math.pi / 5
+                raio = 20 if i % 2 == 0 else 10
+                x = estrela.x + raio * math.cos(angulo - math.pi/2)
+                y = estrela.y + raio * math.sin(angulo - math.pi/2)
+                pontos.append((x, y))
+            pygame.draw.polygon(screen, (255, 255, 0), pontos)
     
     fonte = pygame.font.Font(None, 54)
     texto_pontos = fonte.render(f"{pontos1} - {pontos2}", True, (255, 255, 255))
