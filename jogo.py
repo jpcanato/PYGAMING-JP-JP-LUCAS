@@ -52,6 +52,8 @@ while rodando:
                     estado_atual = TELA_MODO_JOGO
                     personagem_player1 = None
                     personagem_player2 = None
+                elif estado_atual == TELA_INSTRUCOES:
+                    estado_atual = TELA_INICIO
                 elif estado_atual == TELA_JOGO and not vencedor:
                     estado_atual = TELA_INICIO
                     jogador1 = None
@@ -74,6 +76,11 @@ while rodando:
         if evento.type == pygame.MOUSEBUTTONDOWN:
             if estado_atual == TELA_INICIO:
                 if recursos['botao_jogar_rect'].collidepoint(evento.pos):
+                    estado_atual = TELA_MODO_JOGO
+                elif recursos['botao_instrucoes_rect'].collidepoint(evento.pos):
+                    estado_atual = TELA_INSTRUCOES
+            elif estado_atual == TELA_INSTRUCOES:
+                if recursos['botao_voltar_rect'].collidepoint(evento.pos):
                     estado_atual = TELA_MODO_JOGO
             elif estado_atual == TELA_MODO_JOGO:
                 if recursos['grama_rect'].collidepoint(evento.pos):

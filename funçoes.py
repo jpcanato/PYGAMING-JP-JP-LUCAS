@@ -99,7 +99,17 @@ def carregar_recursos():
     
     botao_jogar = pygame.image.load("imagens/jogar.bottão.png")
     botao_jogar_scaled = pygame.transform.scale(botao_jogar, (450, 150))
-    botao_jogar_rect = botao_jogar_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-120))
+    botao_jogar_rect = botao_jogar_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-180))
+    
+    botao_instrucoes = pygame.image.load("imagens/instrucoes.png")
+    botao_instrucoes_scaled = pygame.transform.scale(botao_instrucoes, (300, 80))
+    botao_instrucoes_rect = botao_instrucoes_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-80))
+    
+    botao_voltar = pygame.image.load("imagens/jogar.bottão.png")
+    botao_voltar_scaled = pygame.transform.scale(botao_voltar, (200, 60))
+    botao_voltar_rect = botao_voltar_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-80))
+    
+    botao_jogar_instrucoes_rect = pygame.Rect(SCREEN_WIDTH/2 - 220, SCREEN_HEIGHT-110, 200, 60)
     
     fundo_segunda_tela = pygame.image.load("imagens/fundosegundatela.png")
     fundo_segunda_tela = pygame.transform.scale(fundo_segunda_tela, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -216,7 +226,11 @@ def carregar_recursos():
         'resina_p2_rect': resina_p2_rect,
         'iniciar_jogo_scaled': iniciar_jogo_scaled,
         'iniciar_jogo_rect': iniciar_jogo_rect,
-
+        'botao_instrucoes_scaled': botao_instrucoes_scaled,
+        'botao_instrucoes_rect': botao_instrucoes_rect,
+        'botao_voltar_scaled': botao_voltar_scaled,
+        'botao_voltar_rect': botao_voltar_rect,
+        'botao_jogar_instrucoes_rect': botao_jogar_instrucoes_rect
     }
 
 def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_player1, personagem_player2, contador=0, font_countdown=None):
@@ -225,6 +239,59 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
     if estado_atual == 0:
         screen.blit(recursos['tela_inicio'], (0, 0))
         screen.blit(recursos['botao_jogar_scaled'], recursos['botao_jogar_rect'])
+        screen.blit(recursos['botao_instrucoes_scaled'], recursos['botao_instrucoes_rect'])
+    elif estado_atual == 3:
+        screen.fill((30, 30, 60))
+        
+        fonte_titulo = pygame.font.Font(None, 64)
+        titulo = fonte_titulo.render("INSTRUÇÕES E REGRAS", True, (255, 255, 0))
+        titulo_rect = titulo.get_rect(center=(SCREEN_WIDTH//2, 60))
+        screen.blit(titulo, titulo_rect)
+        
+        fonte_texto = pygame.font.Font(None, 28)
+        y_pos = 120
+        
+        instrucoes = [
+            "COMO JOGAR:",
+            "",
+            "1. Escolha o tipo de quadra (Grama, Saibro ou Rápida)",
+            "2. Cada jogador escolhe seu personagem",
+            "3. Clique em 'Iniciar Jogo' para começar",
+            "",
+            "CONTROLES:",
+            "",
+            "Player 1 (Esquerda):    Player 2 (Direita):",
+            "W - Mover para cima  /   Seta para cima - Mover para cima",
+            "S - Mover para baixo  /  Seta para baixo - Mover para baixo",
+            "A - Mover para esquerda / Seta para esquerda - Mover para esquerda",
+            "D - Mover para direita /  Seta para direita - Mover para direita",
+            "",
+            "REGRAS DO TÊnis:",
+            "",
+            "- Pontuação: 0, 15, 30, 40, Vantagem",
+            "- Melhor de 3 games (primeiro a ganhar 2 games vence)",
+            "- Estrelas aparecem na quadra para acelerar a bola",
+            "",
+            "Pressione ESC ou clique em Voltar para retornar"
+        ]
+        
+        for linha in instrucoes:
+            if linha == "COMO JOGAR:" or linha == "CONTROLES:" or linha == "REGRAS DO TÊnis:":
+                cor = (255, 255, 0)
+                fonte_atual = pygame.font.Font(None, 32)
+            else:
+                cor = (255, 255, 255)
+                fonte_atual = fonte_texto
+            
+            if linha:
+                texto = fonte_atual.render(linha, True, cor)
+                screen.blit(texto, (50, y_pos))
+            y_pos += 25
+        
+        # Botão Jogar centralizado
+        botao_jogar_instrucoes = pygame.transform.scale(recursos['botao_jogar_scaled'], (200, 60))
+        botao_jogar_instrucoes_rect = botao_jogar_instrucoes.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-80))
+        screen.blit(botao_jogar_instrucoes, botao_jogar_instrucoes_rect)
     elif estado_atual == 1:
         screen.blit(recursos['fundo_segunda_tela'], (0, 0))
         screen.blit(recursos['grama_scaled'], recursos['grama_rect'])
@@ -297,7 +364,7 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
         
         if personagem_player1 and personagem_player2:
             screen.blit(recursos['iniciar_jogo_scaled'], recursos['iniciar_jogo_rect'])
-    elif estado_atual == 3:
+    elif estado_atual == 4:
         if tipo_quadra == "grama":
             screen.blit(recursos['quadra_grama'], (0, 0))
         elif tipo_quadra == "saibro":
@@ -309,7 +376,7 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
             texto = font_countdown.render(str(contador), True, (255, 255, 255))
             texto_rect = texto.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
             screen.blit(texto, texto_rect)
-    elif estado_atual == 4:
+    elif estado_atual == 5:
         if tipo_quadra == "grama":
             screen.blit(recursos['quadra_grama'], (0, 0))
         elif tipo_quadra == "saibro":
