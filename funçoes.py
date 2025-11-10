@@ -153,19 +153,24 @@ def carregar_recursos():
     nadal_p1 = pygame.transform.scale(nadal_img, (120, 120))
     nadal_p1_rect = nadal_p1.get_rect(center=(510, 360))
     joao_p1 = pygame.transform.scale(joao_img, (120, 120))
+    joao_p1 = pygame.transform.flip(joao_p1, True, False)
     joao_p1_rect = joao_p1.get_rect(center=(202, 540))
     resina_p1 = pygame.transform.scale(resina_img, (120, 120))
     resina_p1_rect = resina_p1.get_rect(center=(397, 540))
     
     djoko_p2 = pygame.transform.scale(djoko_img, (120, 120))
+    djoko_p2 = pygame.transform.flip(djoko_p2, True, False)
     djoko_p2_rect = djoko_p2.get_rect(center=(765, 360))
     federer_p2 = pygame.transform.scale(federer_img, (120, 120))
+    federer_p2 = pygame.transform.flip(federer_p2, True, False)
     federer_p2_rect = federer_p2.get_rect(center=(960, 360))
     nadal_p2 = pygame.transform.scale(nadal_img, (120, 120))
+    nadal_p2 = pygame.transform.flip(nadal_p2, True, False)
     nadal_p2_rect = nadal_p2.get_rect(center=(1155, 360))
     joao_p2 = pygame.transform.scale(joao_img, (120, 120))
     joao_p2_rect = joao_p2.get_rect(center=(862, 540))
     resina_p2 = pygame.transform.scale(resina_img, (120, 120))
+    resina_p2 = pygame.transform.flip(resina_p2, True, False)
     resina_p2_rect = resina_p2.get_rect(center=(1057, 540))
     
     iniciar_jogo_img = pygame.image.load("imagens/iniciarjogo.png")
@@ -402,10 +407,14 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
     
     if img1:
         img1_scaled = pygame.transform.scale(img1, (120, 120))
+        if jogador1.personagem == "João Fonseca":
+            img1_scaled = pygame.transform.flip(img1_scaled, True, False)
         screen.blit(img1_scaled, (jogador1.x-60, jogador1.y-60))
     
     if img2:
         img2_scaled = pygame.transform.scale(img2, (120, 120))
+        if jogador2.personagem != "João Fonseca":
+            img2_scaled = pygame.transform.flip(img2_scaled, True, False)
         screen.blit(img2_scaled, (jogador2.x-60, jogador2.y-60))
     
     screen.blit(recursos['bolinha'], (int(bola.x-15), int(bola.y-15)))
