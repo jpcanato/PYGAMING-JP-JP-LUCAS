@@ -5,6 +5,7 @@ from imports import SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Jogador:
     def __init__(self, x, y, personagem, lado):
+        """Inicializa um jogador com posição, personagem e lado da quadra."""
         self.x = x
         self.y = y
         self.personagem = personagem
@@ -13,6 +14,7 @@ class Jogador:
         self.rect = pygame.Rect(x-60, y-60, 120, 120)
         
     def mover(self, keys):
+        """Move o jogador baseado nas teclas pressionadas respeitando os limites da quadra."""
         if self.lado == "esquerda":
             if keys[pygame.K_w] and self.y > 237:
                 self.y -= self.velocidade
@@ -36,6 +38,7 @@ class Jogador:
 
 class Bola:
     def __init__(self):
+        """Inicializa a bola no centro da tela com velocidade aleatória."""
         self.x = SCREEN_WIDTH // 2
         self.y = SCREEN_HEIGHT // 2
         self.vel_x = random.choice([-6, 6])
@@ -44,6 +47,7 @@ class Bola:
         self.rect = pygame.Rect(self.x-15, self.y-15, 30, 30)
         
     def mover(self):
+        """Move a bola e faz ela rebater nas bordas superior e inferior da quadra."""
         self.x += self.vel_x
         self.y += self.vel_y
         
@@ -53,6 +57,7 @@ class Bola:
         self.rect.center = (self.x, self.y)
         
     def rebater(self, jogador):
+        """Verifica colisão com jogador e faz a bola rebater aumentando a velocidade."""
         if self.rect.colliderect(jogador.rect):
             self.vel_x = -self.vel_x
             if jogador.lado == "esquerda":
@@ -70,6 +75,7 @@ class Bola:
         return False
         
     def resetar(self):
+        """Reseta a bola para o centro com nova velocidade aleatória."""
         self.x = SCREEN_WIDTH // 2
         self.y = SCREEN_HEIGHT // 2
         self.vel_x = random.choice([-6, 6])
@@ -77,12 +83,14 @@ class Bola:
         
 class Estrela:
     def __init__(self):
+        """Inicializa uma estrela em posição aleatória na quadra."""
         self.x = random.randint(150, SCREEN_WIDTH-150)
         self.y = random.randint(312, SCREEN_HEIGHT-240)
         self.rect = pygame.Rect(self.x-22, self.y-22, 45, 45)
         self.ativa = True
         
     def coletar(self, bola):
+        """Verifica se a bola coletou a estrela e aumenta sua velocidade."""
         if self.ativa and self.rect.colliderect(bola.rect):
             self.ativa = False
             velocidade_atual = math.sqrt(bola.vel_x**2 + bola.vel_y**2)
@@ -94,6 +102,7 @@ class Estrela:
         return False
 
 def carregar_recursos():
+    """Carrega e redimensiona todas as imagens e recursos do jogo."""
     tela_inicio = pygame.image.load("imagens/Tela_inicio.png")
     tela_inicio = pygame.transform.scale(tela_inicio, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
@@ -239,6 +248,7 @@ def carregar_recursos():
     }
 
 def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_player1, personagem_player2, contador=0, font_countdown=None):
+    """Renderiza as telas de menu, seleção e countdown do jogo."""
     screen.fill((0, 0, 0))
     
     if estado_atual == 0:
@@ -390,9 +400,11 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
             screen.blit(recursos['quadra_rapida'], (0, 0))
 
 def obter_imagem_personagem(recursos, personagem):
+    """Retorna a imagem original do personagem selecionado."""
     return recursos['personagens'].get(personagem)
 
 def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, estrelas, pontos1, pontos2, games1, games2, vencedor, aguardando_ponto=False, contador_ponto=0):
+    """Renderiza a tela principal do jogo com jogadores, bola, estrelas e interface."""
     if tipo_quadra == "grama":
         screen.blit(recursos['quadra_grama'], (0, 0))
     elif tipo_quadra == "saibro":
