@@ -3,68 +3,75 @@ import random
 import math
 from imports import SCREEN_WIDTH, SCREEN_HEIGHT
 
+# Classe do Jogador
 class Jogador:
     def __init__(self, x, y, personagem, lado):
-        """Inicializa um jogador com posição, personagem e lado da quadra."""
-        self.x = x
-        self.y = y
-        self.personagem = personagem
-        self.lado = lado
-        self.velocidade = 7
-        self.rect = pygame.Rect(x-60, y-60, 120, 120)
+        self.x = x  # Posição X
+        self.y = y  # Posição Y
+        self.personagem = personagem  # Nome do personagem
+        self.lado = lado  # "esquerda" ou "direita"
+        self.velocidade = 7  # Velocidade de movimento
+        self.rect = pygame.Rect(x-60, y-60, 120, 120)  
         
     def mover(self, keys):
-        """Move o jogador baseado nas teclas pressionadas respeitando os limites da quadra."""
+        # Controles do jogador da esquerda 
         if self.lado == "esquerda":
-            if keys[pygame.K_w] and self.y > 237:
+            if keys[pygame.K_w] and self.y > 237:  # W pra cima
                 self.y -= self.velocidade
-            if keys[pygame.K_s] and self.y < SCREEN_HEIGHT - 165:
+            if keys[pygame.K_s] and self.y < SCREEN_HEIGHT - 165:  # S pra baixo
                 self.y += self.velocidade
-            if keys[pygame.K_a] and self.x > 120:
+            if keys[pygame.K_a] and self.x > 120:  # A pra esquerda
                 self.x -= self.velocidade
-            if keys[pygame.K_d] and self.x < SCREEN_WIDTH//2 - 120:
+            if keys[pygame.K_d] and self.x < SCREEN_WIDTH//2 - 120:  # D pra direita 
                 self.x += self.velocidade
+        # Controles do jogador da direita 
         else:
-            if keys[pygame.K_UP] and self.y > 237:
+            if keys[pygame.K_UP] and self.y > 237:  # Seta para cima
                 self.y -= self.velocidade
-            if keys[pygame.K_DOWN] and self.y < SCREEN_HEIGHT - 165:
+            if keys[pygame.K_DOWN] and self.y < SCREEN_HEIGHT - 165:  # Seta pra baixo
                 self.y += self.velocidade
-            if keys[pygame.K_LEFT] and self.x > SCREEN_WIDTH//2 + 120:
+            if keys[pygame.K_LEFT] and self.x > SCREEN_WIDTH//2 + 120:  # Seta esquerda 
                 self.x -= self.velocidade
-            if keys[pygame.K_RIGHT] and self.x < SCREEN_WIDTH - 120:
+            if keys[pygame.K_RIGHT] and self.x < SCREEN_WIDTH - 120:  # Seta direita
                 self.x += self.velocidade
         
+        # Atualiza o retângulo de batida
         self.rect.center = (self.x, self.y)
 
+# Bola
 class Bola:
     def __init__(self):
-        """Inicializa a bola no centro da tela com velocidade aleatória."""
-        self.x = SCREEN_WIDTH // 2
-        self.y = SCREEN_HEIGHT // 2
-        self.vel_x = random.choice([-6, 6])
-        self.vel_y = random.choice([-4, 4])
-        self.velocidade_base = 6
-        self.rect = pygame.Rect(self.x-15, self.y-15, 30, 30)
+        self.x = SCREEN_WIDTH // 2  # Posição X inicial 
+        self.y = SCREEN_HEIGHT // 2  # Posição Y inicial 
+        self.vel_x = random.choice([-6, 6])  # Velocidade X aleatória
+        self.vel_y = random.choice([-4, 4])  # Velocidade Y aleatória
+        self.velocidade_base = 6  # Velocidade base
+        self.rect = pygame.Rect(self.x-15, self.y-15, 30, 30) #hitbox
         
     def mover(self):
-        """Move a bola e faz ela rebater nas bordas superior e inferior da quadra."""
+        # Move a bola
         self.x += self.vel_x
         self.y += self.vel_y
         
+        # Rebate nas bordas superior e inferior da quadra
         if self.y <= 237 or self.y >= SCREEN_HEIGHT - 165:
             self.vel_y = -self.vel_y
             
+        # Atualiza o retângulo de colisão
         self.rect.center = (self.x, self.y)
-        
+
+# Auxílio do chat gpt    
     def rebater(self, jogador):
-        """Verifica colisão com jogador e faz a bola rebater aumentando a velocidade."""
+        # Verifica colisão com jogador
         if self.rect.colliderect(jogador.rect):
-            self.vel_x = -self.vel_x
+            self.vel_x = -self.vel_x  # Inverte direção horizontal
+            # Reposiciona a bola para evitar colisões múltiplas
             if jogador.lado == "esquerda":
                 self.x = jogador.x + 75
             else:
                 self.x = jogador.x - 75
             
+            # Aumenta a velocidade a cada rebatida (máximo 18)
             velocidade_atual = math.sqrt(self.vel_x**2 + self.vel_y**2)
             nova_velocidade = min(velocidade_atual * 1.1, 18)
             fator = nova_velocidade / velocidade_atual
@@ -75,24 +82,27 @@ class Bola:
         return False
         
     def resetar(self):
-        """Reseta a bola para o centro com nova velocidade aleatória."""
+        # Reseta a bola para o centro com velocidades aleatórias
         self.x = SCREEN_WIDTH // 2
         self.y = SCREEN_HEIGHT // 2
         self.vel_x = random.choice([-6, 6])
         self.vel_y = random.choice([-4, 4])
-        
+
+# Auxílio do chat gpt       
+# Estrela
 class Estrela:
     def __init__(self):
-        """Inicializa uma estrela em posição aleatória na quadra."""
+        # Posição aleatória dentro da quadra
         self.x = random.randint(150, SCREEN_WIDTH-150)
         self.y = random.randint(312, SCREEN_HEIGHT-240)
-        self.rect = pygame.Rect(self.x-22, self.y-22, 45, 45)
-        self.ativa = True
+        self.rect = pygame.Rect(self.x-22, self.y-22, 45, 45)  # Retângulo de colisão
+        self.ativa = True  # Estado da estrela
         
     def coletar(self, bola):
-        """Verifica se a bola coletou a estrela e aumenta sua velocidade."""
+        # Verifica se a bola bateu  na estrela
         if self.ativa and self.rect.colliderect(bola.rect):
-            self.ativa = False
+            self.ativa = False  # tira a estrela
+            # Aumenta a velocidade da bola 
             velocidade_atual = math.sqrt(bola.vel_x**2 + bola.vel_y**2)
             nova_velocidade = min(velocidade_atual * 1.3, 22)
             fator = nova_velocidade / velocidade_atual
@@ -102,27 +112,34 @@ class Estrela:
         return False
 
 def carregar_recursos():
-    """Carrega e redimensiona todas as imagens e recursos do jogo."""
+    """Carrega todas as imagens e recursos do jogo."""
+    # tela inicial
     tela_inicio = pygame.image.load("imagens/Tela_inicio.png")
     tela_inicio = pygame.transform.scale(tela_inicio, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
+    # Botão de jogar
     botao_jogar = pygame.image.load("imagens/jogar.bottão.png")
     botao_jogar_scaled = pygame.transform.scale(botao_jogar, (450, 150))
     botao_jogar_rect = botao_jogar_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-180))
     
+    # Botão das instruções
     botao_instrucoes = pygame.image.load("imagens/instrucoes.png")
     botao_instrucoes_scaled = pygame.transform.scale(botao_instrucoes, (300, 80))
     botao_instrucoes_rect = botao_instrucoes_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-80))
     
+    # Botão pra voltar
     botao_voltar = pygame.image.load("imagens/jogar.bottão.png")
     botao_voltar_scaled = pygame.transform.scale(botao_voltar, (200, 60))
     botao_voltar_rect = botao_voltar_scaled.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-80))
     
+    # Retângulo do botão jogar nas instruções
     botao_jogar_instrucoes_rect = pygame.Rect(SCREEN_WIDTH/2 - 220, SCREEN_HEIGHT-110, 200, 60)
     
+    # Fundo da tela de seleção de quadra
     fundo_segunda_tela = pygame.image.load("imagens/fundosegundatela.png")
     fundo_segunda_tela = pygame.transform.scale(fundo_segunda_tela, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
+    # Botões de seleção de quadra
     grama_img = pygame.image.load("imagens/grama.png")
     grama_scaled = pygame.transform.scale(grama_img, (300, 90))
     grama_rect = grama_scaled.get_rect(center=(SCREEN_WIDTH/2, 120))
@@ -135,6 +152,7 @@ def carregar_recursos():
     saibro_scaled = pygame.transform.scale(saibro_img, (300, 90))
     saibro_rect = saibro_scaled.get_rect(center=(SCREEN_WIDTH/2, 375))
     
+    # Fundos para seleção de personagens
     fundo_grama = pygame.image.load("imagens/fundograma.png")
     fundo_grama = pygame.transform.scale(fundo_grama, (SCREEN_WIDTH, SCREEN_HEIGHT))
     fundo_saibro = pygame.image.load("imagens/Fundo_personagens.png")
@@ -142,6 +160,7 @@ def carregar_recursos():
     fundo_rapida = pygame.image.load("imagens/fundorapida.png")
     fundo_rapida = pygame.transform.scale(fundo_rapida, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
+    # Imagens das quadras para o jogo
     quadra_grama = pygame.image.load("imagens/quadra_1.png")
     quadra_grama = pygame.transform.scale(quadra_grama, (SCREEN_WIDTH, SCREEN_HEIGHT))
     quadra_saibro = pygame.image.load("imagens/quadra_2.png")
@@ -149,12 +168,14 @@ def carregar_recursos():
     quadra_rapida = pygame.image.load("imagens/quadra_3.png")
     quadra_rapida = pygame.transform.scale(quadra_rapida, (SCREEN_WIDTH, SCREEN_HEIGHT))
     
+    # Imagens dos personagens
     djoko_img = pygame.image.load("imagens/djoko.png")
     federer_img = pygame.image.load("imagens/federer.png")
     nadal_img = pygame.image.load("imagens/nadal.png")
     joao_img = pygame.image.load("imagens/jfonseca.png")
     resina_img = pygame.image.load("imagens/resina.png")
     
+    # Personagens do Player 1 
     djoko_p1 = pygame.transform.scale(djoko_img, (120, 120))
     djoko_p1_rect = djoko_p1.get_rect(center=(120, 360))
     federer_p1 = pygame.transform.scale(federer_img, (120, 120))
@@ -162,35 +183,32 @@ def carregar_recursos():
     nadal_p1 = pygame.transform.scale(nadal_img, (120, 120))
     nadal_p1_rect = nadal_p1.get_rect(center=(510, 360))
     joao_p1 = pygame.transform.scale(joao_img, (120, 120))
-    joao_p1 = pygame.transform.flip(joao_p1, True, False)
     joao_p1_rect = joao_p1.get_rect(center=(202, 540))
     resina_p1 = pygame.transform.scale(resina_img, (120, 120))
     resina_p1_rect = resina_p1.get_rect(center=(397, 540))
     
+    # Personagens do Player 2 
     djoko_p2 = pygame.transform.scale(djoko_img, (120, 120))
-    djoko_p2 = pygame.transform.flip(djoko_p2, True, False)
     djoko_p2_rect = djoko_p2.get_rect(center=(765, 360))
     federer_p2 = pygame.transform.scale(federer_img, (120, 120))
-    federer_p2 = pygame.transform.flip(federer_p2, True, False)
     federer_p2_rect = federer_p2.get_rect(center=(960, 360))
     nadal_p2 = pygame.transform.scale(nadal_img, (120, 120))
-    nadal_p2 = pygame.transform.flip(nadal_p2, True, False)
     nadal_p2_rect = nadal_p2.get_rect(center=(1155, 360))
     joao_p2 = pygame.transform.scale(joao_img, (120, 120))
     joao_p2_rect = joao_p2.get_rect(center=(862, 540))
     resina_p2 = pygame.transform.scale(resina_img, (120, 120))
-    resina_p2 = pygame.transform.flip(resina_p2, True, False)
     resina_p2_rect = resina_p2.get_rect(center=(1057, 540))
     
+    # Botão pra iniciar jogo
     iniciar_jogo_img = pygame.image.load("imagens/iniciarjogo.png")
     iniciar_jogo_scaled = pygame.transform.scale(iniciar_jogo_img, (180, 60))
     iniciar_jogo_rect = iniciar_jogo_scaled.get_rect(center=(SCREEN_WIDTH/2, 705))
     
+    # Imagem da bola
     bolinha_img = pygame.image.load("imagens/bolinha.png")
     bolinha_scaled = pygame.transform.scale(bolinha_img, (30, 30))
     
-
-    
+    # Dicionário com todas as imagens dos personagens
     personagens = {
         'Djokovic': djoko_img,
         'Federer': federer_img,
@@ -199,6 +217,7 @@ def carregar_recursos():
         'Resina': resina_img
     }
     
+    # Retorna dicionário com todos os recursos carregados
     return {
         'tela_inicio': tela_inicio,
         'bolinha': bolinha_scaled,
@@ -249,23 +268,28 @@ def carregar_recursos():
 
 def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_player1, personagem_player2, contador=0, font_countdown=None):
     """Renderiza as telas de menu, seleção e countdown do jogo."""
-    screen.fill((0, 0, 0))
+    screen.fill((0, 0, 0))  
     
+    # Tela inicial 
     if estado_atual == 0:
         screen.blit(recursos['tela_inicio'], (0, 0))
         screen.blit(recursos['botao_jogar_scaled'], recursos['botao_jogar_rect'])
         screen.blit(recursos['botao_instrucoes_scaled'], recursos['botao_instrucoes_rect'])
+    # Tela de instruções 
     elif estado_atual == 3:
-        screen.fill((30, 30, 60))
+        screen.fill((30, 30, 60))  
         
+        # Título da tela
         fonte_titulo = pygame.font.Font(None, 64)
         titulo = fonte_titulo.render("INSTRUÇÕES E REGRAS", True, (255, 255, 0))
         titulo_rect = titulo.get_rect(center=(SCREEN_WIDTH//2, 60))
         screen.blit(titulo, titulo_rect)
         
+        # Texto das instruções
         fonte_texto = pygame.font.Font(None, 28)
         y_pos = 120
         
+        # Instruções do jogo
         instrucoes = [
             "COMO JOGAR:",
             "",
@@ -281,7 +305,7 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
             "A - Mover para esquerda / Seta para esquerda - Mover para esquerda",
             "D - Mover para direita /  Seta para direita - Mover para direita",
             "",
-            "REGRAS DO TÊnis:",
+            "REGRAS DO TÊNIS:",
             "",
             "- Pontuação: 0, 15, 30, 40, Vantagem",
             "- Melhor de 3 games (primeiro a ganhar 2 games vence)",
@@ -290,8 +314,10 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
             "Pressione ESC ou clique em Voltar para retornar"
         ]
         
+        # Renderiza cada linha das instruções
         for linha in instrucoes:
-            if linha == "COMO JOGAR:" or linha == "CONTROLES:" or linha == "REGRAS DO TÊnis:":
+            # Títulos em amarelo 
+            if linha == "COMO JOGAR:" or linha == "CONTROLES:" or linha == "REGRAS DO TÊNIS:":
                 cor = (255, 255, 0)
                 fonte_atual = pygame.font.Font(None, 32)
             else:
@@ -307,12 +333,15 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
         botao_jogar_instrucoes = pygame.transform.scale(recursos['botao_jogar_scaled'], (200, 60))
         botao_jogar_instrucoes_rect = botao_jogar_instrucoes.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT-80))
         screen.blit(botao_jogar_instrucoes, botao_jogar_instrucoes_rect)
+    # Tela de seleção de quadra 
     elif estado_atual == 1:
         screen.blit(recursos['fundo_segunda_tela'], (0, 0))
         screen.blit(recursos['grama_scaled'], recursos['grama_rect'])
         screen.blit(recursos['rapida_scaled'], recursos['rapida_rect'])
         screen.blit(recursos['saibro_scaled'], recursos['saibro_rect'])
+    # Tela de seleção de personagens 
     elif estado_atual == 2:
+        # Fundo baseado no tipo de quadra escolhida
         if tipo_quadra == "grama":
             screen.blit(recursos['fundo_grama'], (0, 0))
         elif tipo_quadra == "saibro":
@@ -320,18 +349,21 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
         elif tipo_quadra == "rapida":
             screen.blit(recursos['fundo_rapida'], (0, 0))
         
+        # Personagens do Player 1 
         screen.blit(recursos['djoko_p1'], recursos['djoko_p1_rect'])
         screen.blit(recursos['federer_p1'], recursos['federer_p1_rect'])
         screen.blit(recursos['nadal_p1'], recursos['nadal_p1_rect'])
         screen.blit(recursos['joao_p1'], recursos['joao_p1_rect'])
         screen.blit(recursos['resina_p1'], recursos['resina_p1_rect'])
         
+        # Personagens do Player 2 
         screen.blit(recursos['djoko_p2'], recursos['djoko_p2_rect'])
         screen.blit(recursos['federer_p2'], recursos['federer_p2_rect'])
         screen.blit(recursos['nadal_p2'], recursos['nadal_p2_rect'])
         screen.blit(recursos['joao_p2'], recursos['joao_p2_rect'])
         screen.blit(recursos['resina_p2'], recursos['resina_p2_rect'])
         
+        # Destaque do personagem selecionado pelo Player 1 (verde)
         if personagem_player1 == "Djokovic":
             pygame.draw.rect(screen, (0, 255, 0), recursos['djoko_p1_rect'], 3)
         elif personagem_player1 == "Federer":
@@ -343,6 +375,7 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
         elif personagem_player1 == "Resina":
             pygame.draw.rect(screen, (0, 255, 0), recursos['resina_p1_rect'], 3)
             
+        # Destaque do personagem selecionado pelo Player 2 (vermelho)
         if personagem_player2 == "Djokovic":
             pygame.draw.rect(screen, (255, 0, 0), recursos['djoko_p2_rect'], 3)
         elif personagem_player2 == "Federer":
@@ -354,7 +387,9 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
         elif personagem_player2 == "Resina":
             pygame.draw.rect(screen, (255, 0, 0), recursos['resina_p2_rect'], 3)
         
+        # Nomes dos personagens
         fonte = pygame.font.Font(None, 32)
+        # Nomes do Player 1
         nome_djoko_p1 = fonte.render("Novak Djokovic", True, (255, 255, 255))
         screen.blit(nome_djoko_p1, (20, 427))
         nome_federer_p1 = fonte.render("Roger Federer", True, (255, 255, 255))
@@ -366,6 +401,7 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
         nome_resina_p1 = fonte.render("Mr. Resina", True, (255, 255, 255))
         screen.blit(nome_resina_p1, (347, 607))
         
+        # Nomes do Player 2
         nome_djoko_p2 = fonte.render("Novak Djokovic", True, (255, 255, 255))
         screen.blit(nome_djoko_p2, (660, 427))
         nome_federer_p2 = fonte.render("Roger Federer", True, (255, 255, 255))
@@ -377,9 +413,12 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
         nome_resina_p2 = fonte.render("Mr. Resina", True, (255, 255, 255))
         screen.blit(nome_resina_p2, (1010, 607))
         
+        # Botão iniciar jogo (só aparece quando ambos jogadores escolheram)
         if personagem_player1 and personagem_player2:
             screen.blit(recursos['iniciar_jogo_scaled'], recursos['iniciar_jogo_rect'])
+    # Tela de countdown 
     elif estado_atual == 4:
+        # Fundo da quadra escolhida
         if tipo_quadra == "grama":
             screen.blit(recursos['quadra_grama'], (0, 0))
         elif tipo_quadra == "saibro":
@@ -387,11 +426,14 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
         elif tipo_quadra == "rapida":
             screen.blit(recursos['quadra_rapida'], (0, 0))
         
+        # Countdown centralizado
         if contador > 0 and font_countdown:
             texto = font_countdown.render(str(contador), True, (255, 255, 255))
             texto_rect = texto.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
             screen.blit(texto, texto_rect)
+    # Tela do jogo 
     elif estado_atual == 5:
+        # Fundo da quadra escolhida
         if tipo_quadra == "grama":
             screen.blit(recursos['quadra_grama'], (0, 0))
         elif tipo_quadra == "saibro":
@@ -400,11 +442,12 @@ def renderizar_tela(screen, estado_atual, recursos, tipo_quadra, personagem_play
             screen.blit(recursos['quadra_rapida'], (0, 0))
 
 def obter_imagem_personagem(recursos, personagem):
-    """Retorna a imagem original do personagem selecionado."""
+    """Retorna a imagem do personagem especificado."""
     return recursos['personagens'].get(personagem)
 
 def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, estrelas, pontos1, pontos2, games1, games2, vencedor, aguardando_ponto=False, contador_ponto=0):
-    """Renderiza a tela principal do jogo com jogadores, bola, estrelas e interface."""
+    """Função principal para renderizar a tela do jogo."""
+    # Fundo da quadra baseado no tipo escolhido
     if tipo_quadra == "grama":
         screen.blit(recursos['quadra_grama'], (0, 0))
     elif tipo_quadra == "saibro":
@@ -412,28 +455,29 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
     elif tipo_quadra == "rapida":
         screen.blit(recursos['quadra_rapida'], (0, 0))
     
+    # Linha central da quadra
     pygame.draw.line(screen, (255, 255, 255), (SCREEN_WIDTH//2, 237), (SCREEN_WIDTH//2, SCREEN_HEIGHT-165), 4)
     
+    # Renderiza os jogadores
     img1 = obter_imagem_personagem(recursos, jogador1.personagem)
     img2 = obter_imagem_personagem(recursos, jogador2.personagem)
     
     if img1:
         img1_scaled = pygame.transform.scale(img1, (120, 120))
-        if jogador1.personagem == "João Fonseca":
-            img1_scaled = pygame.transform.flip(img1_scaled, True, False)
         screen.blit(img1_scaled, (jogador1.x-60, jogador1.y-60))
     
     if img2:
         img2_scaled = pygame.transform.scale(img2, (120, 120))
-        if jogador2.personagem != "João Fonseca":
-            img2_scaled = pygame.transform.flip(img2_scaled, True, False)
         screen.blit(img2_scaled, (jogador2.x-60, jogador2.y-60))
     
+    # Renderiza a bola
     screen.blit(recursos['bolinha'], (int(bola.x-15), int(bola.y-15)))
     
+# Auxílio do chat gpt
+    # Renderiza as estrelas ativas
     for estrela in estrelas:
         if estrela.ativa:
-            # Desenhar estrela
+            # Desenha estrela
             pontos = []
             for i in range(10):
                 angulo = i * math.pi / 5
@@ -444,6 +488,7 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
             pygame.draw.polygon(screen, (255, 255, 0), pontos)
     
     def pontos_tenis(pontos1, pontos2, jogador):
+        """Converte pontos numéricos para pontuação do tênis."""
         if pontos1 >= 3 and pontos2 >= 3:
             if pontos1 == pontos2: return "40"
             elif jogador == 1:
@@ -459,7 +504,7 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
     
     fonte = pygame.font.Font(None, 54)
     if vencedor:
-        # Fundo semi-transparente
+        # Fundo para mensagem de vitória
         overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         overlay.set_alpha(128)
         overlay.fill((0, 0, 0))
@@ -471,17 +516,17 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
         vencedor_rect = texto_vencedor.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 - 30))
         screen.blit(texto_vencedor, vencedor_rect)
         
-        # Instrução
+        # Instrução para reiniciar
         fonte_media = pygame.font.Font(None, 36)
         texto_reiniciar = fonte_media.render("Pressione ESPAÇO para voltar ao início", True, (255, 255, 255))
         reiniciar_rect = texto_reiniciar.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 + 40))
         screen.blit(texto_reiniciar, reiniciar_rect)
     else:
-        # Placar simples no topo
+        # Placar no topo da tela
         fonte_nome = pygame.font.Font(None, 32)
         fonte_placar = pygame.font.Font(None, 36)
         
-        # Player 1
+        # Informações do Player 1
         nome1 = fonte_nome.render(jogador1.personagem, True, (255, 255, 255))
         screen.blit(nome1, (50, 30))
         games1_text = fonte_placar.render(f"Games: {games1}", True, (255, 255, 255))
@@ -489,7 +534,7 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
         pontos1_text = fonte_placar.render(f"Pontos: {pontos_tenis(pontos1, pontos2, 1)}", True, (255, 255, 255))
         screen.blit(pontos1_text, (50, 90))
         
-        # Player 2
+        # Informações do Player 2
         nome2 = fonte_nome.render(jogador2.personagem, True, (255, 255, 255))
         nome2_rect = nome2.get_rect(topright=(SCREEN_WIDTH - 50, 30))
         screen.blit(nome2, nome2_rect)
@@ -500,7 +545,8 @@ def renderizar_jogo(screen, recursos, tipo_quadra, jogador1, jogador2, bola, est
         pontos2_rect = pontos2_text.get_rect(topright=(SCREEN_WIDTH - 50, 90))
         screen.blit(pontos2_text, pontos2_rect)
     
-    if aguardando_ponto and contador_ponto > 0:
+    # Countdown entre pontos
+    if aguardando_ponto and contador_ponto > 0 and not vencedor:
         font_countdown = pygame.font.Font(None, 225)
         texto_countdown = font_countdown.render(str(contador_ponto), True, (255, 255, 255))
         texto_rect = texto_countdown.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
