@@ -216,13 +216,15 @@ while rodando:
                     # Verifica vitória (2 games)
                     if games_player2 >= 2:
                         vencedor = "Player 2"
+                        aguardando_ponto = False  # Para o countdown quando há vencedor
                 # Sistema de deuce (40-40)
                 elif pontos_player1 >= 4 and pontos_player2 >= 4 and pontos_player1 > pontos_player2:
                     pontos_player1 = 3
                     pontos_player2 = 3
-                aguardando_ponto = True
-                contador_ponto = 3
-                tempo_ponto = pygame.time.get_ticks()
+                if not vencedor:  # Só inicia countdown se não há vencedor
+                    aguardando_ponto = True
+                    contador_ponto = 3
+                    tempo_ponto = pygame.time.get_ticks()
             # Verifica se bola saiu pela direita
             elif bola.x > SCREEN_WIDTH:
                 pontos_player1 += 1
@@ -234,13 +236,15 @@ while rodando:
                     # Verifica vitória (2 games)
                     if games_player1 >= 2:
                         vencedor = "Player 1"
+                        aguardando_ponto = False  # Para o countdown quando há vencedor
                 # Sistema de deuce (40-40)
                 elif pontos_player2 >= 4 and pontos_player1 >= 4 and pontos_player2 > pontos_player1:
                     pontos_player1 = 3
                     pontos_player2 = 3
-                aguardando_ponto = True
-                contador_ponto = 3
-                tempo_ponto = pygame.time.get_ticks()
+                if not vencedor:  # Só inicia countdown se não há vencedor
+                    aguardando_ponto = True
+                    contador_ponto = 3
+                    tempo_ponto = pygame.time.get_ticks()
     
     # Renderização das telas
     if estado_atual == TELA_JOGO:
