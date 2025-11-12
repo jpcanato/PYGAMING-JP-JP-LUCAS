@@ -9,6 +9,9 @@
 
 Jogo de tênis desenvolvido em Python utilizando a biblioteca Pygame. O jogo apresenta uma experiência completa de tênis com diferentes personagens, tipos de quadra e mecânicas realistas.
 
+## Video da Jogabilidade
+https://youtu.be/LtmvPiK_0pY
+
 ### Características Principais:
 - **5 Personagens Jogáveis**: Djokovic, Federer, Nadal, João Fonseca e Mr. Resina
 - **3 Tipos de Quadra**: Grama, Saibro e Rápida
